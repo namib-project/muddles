@@ -17,7 +17,18 @@ module.exports = grammar({
                                                                ,$.json_pair_fallback)))),
 
     ietf_acls : $ => json_pair('"ietf-access-control-list:access-lists"'
-                              ,json_object($.json_pair_fallback)),
+                              ,choice($.acl, $.json_value_fallback)),
+    acl: $ => json_pair('"acl"', json_list($.acl_object)),
+    acl_object: $ => json_object(seq(json_pair('"name"', $.string),','
+                                    ,json_pair('"type"', $.string),','
+                                    ,json_pair('"aces"', $.ace))),
+    ace: $ => json_object(json_pair('"ace"'
+                         ,json_list($.ace_object))),
+    ace_object: $ => json_object(seq(json_pair('"name"',    $.string) ,','
+                                    ,json_pair('"matches"', $.matches),','
+                                    ,json_pair('"actions"', $.actions))),
+    matches: $ => $.json_object_fallback, // TODO
+    actions: $ => $.json_object_fallback, // TODO
 
     mud_version:          $ => json_pair('"mud-version"'       ,field('version'  ,$.number)),
     mud_url:              $ => json_pair('"mud-url"'           ,field('url'      ,$.string)),
@@ -29,8 +40,7 @@ module.exports = grammar({
     to_device_policy:     $ => json_pair('"to-device-policy"'  ,field('policy'   ,$.policy)),
 
     policy: $ => json_object(json_pair('"access-lists"', $.access_list)),
-    access_list: $ => json_object(json_pair('"access-list"', json_list($.name))),
-    name: $ => json_object(json_pair('"name"', $.string)),
+    access_list: $ => json_object(json_pair('"access-list"', json_list(json_object(json_pair('"name"', $.string))))),
 
     string: $ => seq('"', $.string_quoted_content, '"'),
     string_quoted_content: $ => repeat1(choice(token.immediate(/[^\\"\n]+/)

@@ -8,7 +8,94 @@
       "required": false,
       "types": [
         {
-          "type": "name",
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ace",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ace_object",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ace_object",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "actions",
+          "named": true
+        },
+        {
+          "type": "matches",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "acl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "acl_object",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "acl_object",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ace",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "actions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "json_object_fallback",
           "named": true
         }
       ]
@@ -60,7 +147,11 @@
       "required": true,
       "types": [
         {
-          "type": "json_pair_fallback",
+          "type": "acl",
+          "named": true
+        },
+        {
+          "type": "json_value_fallback",
           "named": true
         }
       ]
@@ -226,6 +317,21 @@
     }
   },
   {
+    "type": "matches",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "json_object_fallback",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "mud_url",
     "named": true,
     "fields": {
@@ -255,21 +361,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "name",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "string",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -371,6 +462,22 @@
     "named": false
   },
   {
+    "type": "\"ace\"",
+    "named": false
+  },
+  {
+    "type": "\"aces\"",
+    "named": false
+  },
+  {
+    "type": "\"acl\"",
+    "named": false
+  },
+  {
+    "type": "\"actions\"",
+    "named": false
+  },
+  {
     "type": "\"cache-validity\"",
     "named": false
   },
@@ -395,6 +502,10 @@
     "named": false
   },
   {
+    "type": "\"matches\"",
+    "named": false
+  },
+  {
     "type": "\"mud-url\"",
     "named": false
   },
@@ -412,6 +523,10 @@
   },
   {
     "type": "\"to-device-policy\"",
+    "named": false
+  },
+  {
+    "type": "\"type\"",
     "named": false
   },
   {
