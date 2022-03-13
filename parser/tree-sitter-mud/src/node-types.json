@@ -1,11 +1,457 @@
 [
   {
-    "type": "mud",
+    "type": "access_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "bool",
     "named": true,
     "fields": {}
   },
   {
-    "type": "TODO",
+    "type": "cache_validity",
+    "named": true,
+    "fields": {
+      "hours": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "from_device_policy",
+    "named": true,
+    "fields": {
+      "policy": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "policy",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "ietf_acls",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "json_pair_fallback",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ietf_mud",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "cache_validity",
+          "named": true
+        },
+        {
+          "type": "from_device_policy",
+          "named": true
+        },
+        {
+          "type": "is_supported",
+          "named": true
+        },
+        {
+          "type": "json_pair_fallback",
+          "named": true
+        },
+        {
+          "type": "last_update",
+          "named": true
+        },
+        {
+          "type": "mud_url",
+          "named": true
+        },
+        {
+          "type": "mud_version",
+          "named": true
+        },
+        {
+          "type": "systeminfo",
+          "named": true
+        },
+        {
+          "type": "to_device_policy",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "is_supported",
+    "named": true,
+    "fields": {
+      "supported": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "bool",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "json_array_fallback",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "json_value_fallback",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "json_object_fallback",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "json_pair_fallback",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "json_pair_fallback",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "json_value_fallback",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "json_value_fallback",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "json_array_fallback",
+          "named": true
+        },
+        {
+          "type": "json_object_fallback",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "last_update",
+    "named": true,
+    "fields": {
+      "timestamp": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "mud_url",
+    "named": true,
+    "fields": {
+      "url": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "mud_version",
+    "named": true,
+    "fields": {
+      "version": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "policy",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "access_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "source",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ietf_acls",
+          "named": true
+        },
+        {
+          "type": "ietf_mud",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "string",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "string_quoted_content",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "string_quoted_content",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "systeminfo",
+    "named": true,
+    "fields": {
+      "info": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "to_device_policy",
+    "named": true,
+    "fields": {
+      "policy": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "policy",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "\"access-list\"",
+    "named": false
+  },
+  {
+    "type": "\"access-lists\"",
+    "named": false
+  },
+  {
+    "type": "\"cache-validity\"",
+    "named": false
+  },
+  {
+    "type": "\"from-device-policy\"",
+    "named": false
+  },
+  {
+    "type": "\"ietf-access-control-list:access-lists\"",
+    "named": false
+  },
+  {
+    "type": "\"ietf-mud:mud\"",
+    "named": false
+  },
+  {
+    "type": "\"is-supported\"",
+    "named": false
+  },
+  {
+    "type": "\"last-update\"",
+    "named": false
+  },
+  {
+    "type": "\"mud-url\"",
+    "named": false
+  },
+  {
+    "type": "\"mud-version\"",
+    "named": false
+  },
+  {
+    "type": "\"name\"",
+    "named": false
+  },
+  {
+    "type": "\"systeminfo\"",
+    "named": false
+  },
+  {
+    "type": "\"to-device-policy\"",
+    "named": false
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "]",
+    "named": false
+  },
+  {
+    "type": "false",
+    "named": false
+  },
+  {
+    "type": "null",
+    "named": false
+  },
+  {
+    "type": "number",
+    "named": true
+  },
+  {
+    "type": "true",
+    "named": false
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "}",
     "named": false
   }
 ]
