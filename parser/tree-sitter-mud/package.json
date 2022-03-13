@@ -1,0 +1,14 @@
+{
+  "name": "tree-sitter-mud",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for Manufacturer Usage Descriptions (MUD)",
+  "main": "bindings/node",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jan Hensel",
+  "license": "MIT",
+  "dependencies": {
+    "nan": "^2.15.0"
+  }
+}
