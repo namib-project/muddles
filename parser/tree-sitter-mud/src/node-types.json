@@ -132,6 +132,26 @@
     }
   },
   {
+    "type": "destination_port",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "range_or_operator",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "direction_initiated",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "forwarding_action",
     "named": true,
     "fields": {},
@@ -160,6 +180,36 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "icmp_matches",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "json_pair_fallback",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ietf_acldns",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -219,6 +269,67 @@
         },
         {
           "type": "to_device_policy",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ip_header_proto",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ipv4_matches",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ietf_acldns",
+          "named": true
+        },
+        {
+          "type": "ip_header_proto",
+          "named": true
+        },
+        {
+          "type": "json_pair_fallback",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ipv6_matches",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ietf_acldns",
+          "named": true
+        },
+        {
+          "type": "ip_header_proto",
+          "named": true
+        },
+        {
+          "type": "json_pair_fallback",
           "named": true
         }
       ]
@@ -345,7 +456,61 @@
       "required": true,
       "types": [
         {
-          "type": "json_object_fallback",
+          "type": "matches_object",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "matches_object",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "icmp_matches",
+          "named": true
+        },
+        {
+          "type": "ipv4_matches",
+          "named": true
+        },
+        {
+          "type": "ipv6_matches",
+          "named": true
+        },
+        {
+          "type": "json_pair_fallback",
+          "named": true
+        },
+        {
+          "type": "mud_matches_augment",
+          "named": true
+        },
+        {
+          "type": "tcp_matches",
+          "named": true
+        },
+        {
+          "type": "udp_matches",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "mud_matches_augment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "json_pair_fallback",
           "named": true
         }
       ]
@@ -399,6 +564,59 @@
     }
   },
   {
+    "type": "port_operator",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "port_range",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "range_or_operator",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "port_operator",
+          "named": true
+        },
+        {
+          "type": "port_range",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "source",
     "named": true,
     "fields": {},
@@ -412,6 +630,21 @@
         },
         {
           "type": "ietf_mud",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "source_port",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "range_or_operator",
           "named": true
         }
       ]
@@ -454,6 +687,33 @@
     }
   },
   {
+    "type": "tcp_matches",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "destination_port",
+          "named": true
+        },
+        {
+          "type": "direction_initiated",
+          "named": true
+        },
+        {
+          "type": "json_pair_fallback",
+          "named": true
+        },
+        {
+          "type": "source_port",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "to_device_policy",
     "named": true,
     "fields": {
@@ -467,6 +727,33 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "udp_matches",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "destination_port",
+          "named": true
+        },
+        {
+          "type": "direction_initiated",
+          "named": true
+        },
+        {
+          "type": "json_pair_fallback",
+          "named": true
+        },
+        {
+          "type": "source_port",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -506,7 +793,15 @@
     "named": false
   },
   {
+    "type": "\"destination-port\"",
+    "named": false
+  },
+  {
     "type": "\"drop\"",
+    "named": false
+  },
+  {
+    "type": "\"eth\"",
     "named": false
   },
   {
@@ -514,7 +809,15 @@
     "named": false
   },
   {
+    "type": "\"from-device\"",
+    "named": false
+  },
+  {
     "type": "\"from-device-policy\"",
+    "named": false
+  },
+  {
+    "type": "\"icmp\"",
     "named": false
   },
   {
@@ -522,7 +825,23 @@
     "named": false
   },
   {
+    "type": "\"ietf-acldns:",
+    "named": false
+  },
+  {
+    "type": "\"ietf-mud:direction-initiated\"",
+    "named": false
+  },
+  {
     "type": "\"ietf-mud:mud\"",
+    "named": false
+  },
+  {
+    "type": "\"ipv4\"",
+    "named": false
+  },
+  {
+    "type": "\"ipv6\"",
     "named": false
   },
   {
@@ -531,6 +850,10 @@
   },
   {
     "type": "\"last-update\"",
+    "named": false
+  },
+  {
+    "type": "\"lower-port\"",
     "named": false
   },
   {
@@ -550,11 +873,35 @@
     "named": false
   },
   {
+    "type": "\"operator\"",
+    "named": false
+  },
+  {
+    "type": "\"port\"",
+    "named": false
+  },
+  {
+    "type": "\"protocol\"",
+    "named": false
+  },
+  {
     "type": "\"reject\"",
     "named": false
   },
   {
+    "type": "\"source-port\"",
+    "named": false
+  },
+  {
     "type": "\"systeminfo\"",
+    "named": false
+  },
+  {
+    "type": "\"tcp\"",
+    "named": false
+  },
+  {
+    "type": "\"to-device\"",
     "named": false
   },
   {
@@ -563,6 +910,14 @@
   },
   {
     "type": "\"type\"",
+    "named": false
+  },
+  {
+    "type": "\"udp\"",
+    "named": false
+  },
+  {
+    "type": "\"upper-port\"",
     "named": false
   },
   {
@@ -582,6 +937,10 @@
     "named": false
   },
   {
+    "type": "dst-dnsname",
+    "named": false
+  },
+  {
     "type": "false",
     "named": false
   },
@@ -592,6 +951,10 @@
   {
     "type": "number",
     "named": true
+  },
+  {
+    "type": "src-dnsname",
+    "named": false
   },
   {
     "type": "true",

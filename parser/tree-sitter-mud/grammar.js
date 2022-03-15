@@ -27,8 +27,59 @@ module.exports = grammar({
     ace_object: $ => json_object(seq(json_pair('"name"',    $.string) ,','
                                     ,json_pair('"matches"', $.matches),','
                                     ,json_pair('"actions"', $.actions))),
-    matches: $ => $.json_object_fallback, // TODO
+    matches: $ => $.matches_object, // TODO
     actions: $ => choice($.forwarding_action, $.json_object_fallback),
+
+    matches_object: $ => json_object(comma_separated(choice($.ipv4_matches
+                                                           ,$.ipv6_matches
+                                                           ,$.tcp_matches
+                                                           ,$.udp_matches
+                                                           ,$.icmp_matches
+                                                           ,$.mud_matches_augment
+                                                           ,$.json_pair_fallback))),
+
+    mud_matches_augment: $ => json_pair('"ietf-mud:mud"'
+                                       ,json_object(comma_separated(choice($.json_pair_fallback)))), // TODO
+
+    eth_matches: $ => json_pair('"eth"', json_object(comma_separated($.json_pair_fallback))),
+
+    ipv4_matches: $ => json_pair('"ipv4"'
+                                ,json_object(comma_separated(choice($.ip_header_proto
+                                                                   ,$.ietf_acldns
+                                                                   ,$.json_pair_fallback)))), // TODO
+    ipv6_matches: $ => json_pair('"ipv6"'
+                                ,json_object(comma_separated(choice($.ip_header_proto
+                                                                   ,$.ietf_acldns
+                                                                   ,$.json_pair_fallback)))), // TODO
+
+    tcp_matches: $ => json_pair('"tcp"'
+                               ,json_object(comma_separated(choice($.source_port
+                                                                  ,$.destination_port
+                                                                  ,$.direction_initiated
+                                                                  ,$.json_pair_fallback)))), // TODO
+    udp_matches: $ => json_pair('"udp"'
+                               ,json_object(comma_separated(choice($.source_port
+                                                                  ,$.destination_port
+                                                                  ,$.direction_initiated
+                                                                  ,$.json_pair_fallback)))), // TODO
+
+    icmp_matches: $ => json_pair('"icmp"', json_object(comma_separated($.json_pair_fallback))), // TODO
+
+    ip_header_proto: $ => json_pair('"protocol"', $.number),
+    ietf_acldns: $ => json_pair(seq('"ietf-acldns:',choice('src-dnsname','dst-dnsname'),'"')
+                               ,$.string),
+    source_port:      $ => json_pair('"source-port"',      $.range_or_operator),
+    destination_port: $ => json_pair('"destination-port"', $.range_or_operator),
+
+    range_or_operator: $ => choice($.port_range, $.port_operator),
+    port_range:    $ => json_object(comma_separated1(choice(json_pair('"lower-port"', $.number)
+                                                           ,json_pair('"upper-port"', $.number)))),
+    port_operator: $ => json_object(comma_separated1(choice(json_pair('"operator"', $.string)
+                                                           ,json_pair('"port"',     $.number)))),
+
+    direction_initiated: $ => json_pair('"ietf-mud:direction-initiated"'
+                                       ,choice('"to-device"', '"from-device"')),
+
 
     forwarding_action: $ => json_object(json_pair('"forwarding"', $.action)),
     action: $ => choice('"accept"', '"drop"', '"reject"'),
