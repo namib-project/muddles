@@ -10,5 +10,12 @@
   "license": "MIT",
   "dependencies": {
     "nan": "^2.15.0"
-  }
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.json",
+      "file-types": [ "json" ],
+      "highlights": [ "queries/highlights.scm" ]
+    }
+  ]
 }
