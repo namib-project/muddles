@@ -176,17 +176,8 @@
           "value": ":"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "acl"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "json_value_fallback"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "acl"
         }
       ]
     },
@@ -195,47 +186,59 @@
       "members": [
         {
           "type": "STRING",
-          "value": "\"acl\""
-        },
-        {
-          "type": "STRING",
-          "value": ":"
+          "value": "{"
         },
         {
           "type": "SEQ",
           "members": [
             {
               "type": "STRING",
-              "value": "["
+              "value": "\"acl\""
             },
             {
-              "type": "CHOICE",
+              "type": "STRING",
+              "value": ":"
+            },
+            {
+              "type": "SEQ",
               "members": [
+                {
+                  "type": "STRING",
+                  "value": "["
+                },
                 {
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SEQ",
+                      "type": "CHOICE",
                       "members": [
                         {
-                          "type": "SYMBOL",
-                          "name": "acl_object"
+                          "type": "SEQ",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "acl_object"
+                            },
+                            {
+                              "type": "REPEAT",
+                              "content": {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "STRING",
+                                    "value": ","
+                                  },
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "acl_object"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
                         },
                         {
-                          "type": "REPEAT",
-                          "content": {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "STRING",
-                                "value": ","
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "acl_object"
-                              }
-                            ]
-                          }
+                          "type": "BLANK"
                         }
                       ]
                     },
@@ -245,15 +248,16 @@
                   ]
                 },
                 {
-                  "type": "BLANK"
+                  "type": "STRING",
+                  "value": "]"
                 }
               ]
-            },
-            {
-              "type": "STRING",
-              "value": "]"
             }
           ]
+        },
+        {
+          "type": "STRING",
+          "value": "}"
         }
       ]
     },
@@ -496,8 +500,64 @@
       "name": "json_object_fallback"
     },
     "actions": {
-      "type": "SYMBOL",
-      "name": "json_object_fallback"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "forwarding_action"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "json_object_fallback"
+        }
+      ]
+    },
+    "forwarding_action": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "\"forwarding\""
+            },
+            {
+              "type": "STRING",
+              "value": ":"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "action"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "action": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\"accept\""
+        },
+        {
+          "type": "STRING",
+          "value": "\"drop\""
+        },
+        {
+          "type": "STRING",
+          "value": "\"reject\""
+        }
+      ]
     },
     "mud_version": {
       "type": "SEQ",

@@ -87,6 +87,11 @@
     }
   },
   {
+    "type": "action",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "actions",
     "named": true,
     "fields": {},
@@ -94,6 +99,10 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "forwarding_action",
+          "named": true
+        },
         {
           "type": "json_object_fallback",
           "named": true
@@ -123,6 +132,21 @@
     }
   },
   {
+    "type": "forwarding_action",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "action",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "from_device_policy",
     "named": true,
     "fields": {
@@ -148,10 +172,6 @@
       "types": [
         {
           "type": "acl",
-          "named": true
-        },
-        {
-          "type": "json_value_fallback",
           "named": true
         }
       ]
@@ -454,6 +474,10 @@
     "named": false
   },
   {
+    "type": "\"accept\"",
+    "named": false
+  },
+  {
     "type": "\"access-list\"",
     "named": false
   },
@@ -479,6 +503,14 @@
   },
   {
     "type": "\"cache-validity\"",
+    "named": false
+  },
+  {
+    "type": "\"drop\"",
+    "named": false
+  },
+  {
+    "type": "\"forwarding\"",
     "named": false
   },
   {
@@ -515,6 +547,10 @@
   },
   {
     "type": "\"name\"",
+    "named": false
+  },
+  {
+    "type": "\"reject\"",
     "named": false
   },
   {
