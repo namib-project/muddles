@@ -2,6 +2,8 @@ use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{Client, LanguageServer, LspService, Server};
 
+use tree_sitter::Parser;
+
 #[derive(Debug)]
 struct Backend {
     client: Client,
@@ -77,19 +79,26 @@ impl LanguageServer for Backend {
     }
 }
 
-impl Backend {
-}
+impl Backend {}
 
 #[tokio::main]
 async fn main() {
+    let mut parser = Parser::new();
+    if let Err(err) = parser.set_language(tree_sitter_mud::language()) {
+        panic!("{}", err);
+    }
+    let source = "{}"; // empty json
+    let tree = parser.parse(source, None).expect("parsing failed?!");
+    let root = tree.root_node();
+    assert!(!root.has_error());
+
+    // -- rest --
     eprintln!("starting muddles");
 
     let stdin = tokio::io::stdin();
     let stdout = tokio::io::stdout();
 
-    let (service, messages) = LspService::new(|client| Backend {
-        client,
-    });
+    let (service, messages) = LspService::new(|client| Backend { client });
     Server::new(stdin, stdout)
         .interleave(messages)
         .serve(service)

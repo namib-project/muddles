@@ -272,6 +272,7 @@ version = "0.1.0"
 dependencies = [
  "tokio",
  "tower-lsp",
+ "tree-sitter",
  "tree-sitter-mud",
 ]
 
