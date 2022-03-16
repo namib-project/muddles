@@ -5,9 +5,9 @@ use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{Client, LanguageServer, LspService, Server};
 
-use tree_sitter::{Parser, Tree};
+use tree_sitter::{Parser, Query, QueryCursor, Tree};
 
-use log::debug;
+use log::{debug, error};
 
 struct Backend {
     client: Client,
@@ -29,18 +29,31 @@ impl LanguageServer for Backend {
 
     async fn did_open(&self, params: DidOpenTextDocumentParams) {
         debug!("did open");
+
+        let mut diagnostics: Vec<Diagnostic>;
         {
             let mut doc = Document::new();
             doc.update(params.text_document.text);
 
             let mut docs = self.docs.write().unwrap();
             docs.insert(params.text_document.uri.to_string(), doc);
+            diagnostics = docs
+                .get(&params.text_document.uri.to_string())
+                .unwrap()
+                .get_errors()
+                .iter()
+                .map(|range| Diagnostic::new_simple(*range, "parser error".to_string()))
+                .collect();
         }
+        self.client
+            .publish_diagnostics(params.text_document.uri, diagnostics, None)
+            .await;
     }
 
     async fn did_change(&self, params: DidChangeTextDocumentParams) {
         debug!("change notified");
 
+        let mut diagnostics: Vec<Diagnostic>;
         {
             let mut doc = Document::new();
             // NOTE(ja_he):
@@ -51,9 +64,14 @@ impl LanguageServer for Backend {
 
             let mut docs = self.docs.write().unwrap();
             docs.insert(params.text_document.uri.to_string(), doc);
+            diagnostics = docs
+                .get(&params.text_document.uri.to_string())
+                .unwrap()
+                .get_errors()
+                .iter()
+                .map(|range| Diagnostic::new_simple(*range, "parser error".to_string()))
+                .collect();
         }
-
-        let diagnostics: Vec<Diagnostic> = vec![];
 
         self.client
             .publish_diagnostics(params.text_document.uri, diagnostics, None)
@@ -150,6 +168,49 @@ impl Document {
         self.tree = self.parser.parse(&self.source, None);
         if self.tree.is_none() {
             panic!("after parsing, tree is None");
+        }
+    }
+
+    fn get_errors(&self) -> Vec<Range> {
+        match &self.tree {
+            None => {
+                error!("tree was None when looking for parser errors");
+                vec![Range {
+                    start: Position {
+                        line: 0,
+                        character: 0,
+                    },
+                    end: Position {
+                        line: 1,
+                        character: 0,
+                    },
+                }]
+            }
+            Some(tree) => {
+                let query = Query::new(tree_sitter_mud::language(), "(ERROR) @error")
+                    .expect("unable to create query");
+                let mut cursor = QueryCursor::new();
+                cursor
+                    .captures(&query, tree.root_node(), self.source.as_bytes())
+                    .map(|c| {
+                        c.0.captures.iter().map(|x| {
+                            let start = x.node.start_position();
+                            let end = x.node.end_position();
+                            Range {
+                                start: Position {
+                                    line: start.row as u32,
+                                    character: start.column as u32,
+                                },
+                                end: Position {
+                                    line: end.row as u32,
+                                    character: end.column as u32,
+                                },
+                            }
+                        })
+                    })
+                    .flatten()
+                    .collect()
+            }
         }
     }
 }
