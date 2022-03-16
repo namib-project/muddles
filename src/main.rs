@@ -5,7 +5,7 @@ use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{Client, LanguageServer, LspService, Server};
 
-use tree_sitter::{Parser, Query, QueryCursor, Tree};
+use tree_sitter::{Node, Parser, Query, QueryCursor, Tree};
 
 use log::{debug, error};
 
@@ -102,11 +102,26 @@ impl LanguageServer for Backend {
         Ok(())
     }
 
-    async fn completion(&self, _: CompletionParams) -> Result<Option<CompletionResponse>> {
-        Ok(Some(CompletionResponse::Array(vec![
-            CompletionItem::new_simple("Hello".to_string(), "Some detail".to_string()),
-            CompletionItem::new_simple("Bye".to_string(), "More detail".to_string()),
-        ])))
+    async fn completion(&self, params: CompletionParams) -> Result<Option<CompletionResponse>> {
+        let completions: Vec<CompletionItem>;
+        {
+            let docs = self.docs.read().unwrap();
+            completions = match docs
+                .get(&params.text_document_position.text_document.uri.to_string())
+            {
+                Some(doc) => match doc.get_mud_location(params.text_document_position.position) {
+                    MudLocation::AclNameValue => doc
+                        .get_acl_names()
+                        .iter()
+                        .map(|s| CompletionItem::new_simple(s.clone(), "ACL name".to_string()))
+                        .collect(),
+                    MudLocation::Unknown => vec![],
+                },
+                None => vec![],
+            }
+        }
+
+        Ok(Some(CompletionResponse::Array(completions)))
     }
 
     async fn hover(&self, _params: HoverParams) -> Result<Option<Hover>> {
@@ -212,5 +227,84 @@ impl Document {
                     .collect()
             }
         }
+    }
+
+    fn get_acl_names(&self) -> Vec<String> {
+        match &self.tree {
+            None => vec![],
+            Some(tree) => {
+                let query = Query::new(
+                    tree_sitter_mud::language(),
+                    "(acl_name name: (string ((string_quoted_content) @name)))",
+                )
+                .expect("unable to create query");
+                let mut cursor = QueryCursor::new();
+                cursor
+                    .captures(&query, tree.root_node(), self.source.as_bytes())
+                    .map(|x| x.0.captures)
+                    .flatten()
+                    .map(|x| {
+                        x.node
+                            .utf8_text(self.source.as_bytes())
+                            .expect("cannot get node content")
+                            .to_string()
+                    })
+                    .collect()
+            }
+        }
+    }
+
+    fn get_mud_location(&self, pos: Position) -> MudLocation {
+        // TODO(ja_he):
+        //  definite performance concerns with this approach once we add more stuff to
+        //  search for.
+        match &self.tree {
+            None => MudLocation::Unknown,
+            Some(tree) => {
+                let query = Query::new(
+                    tree_sitter_mud::language(),
+                    "(policy_acl_name name: (string ((string_quoted_content) @insertable)))",
+                )
+                .expect("unable to create query");
+                let mut cursor = QueryCursor::new();
+                let on_policy_acl_name = cursor
+                    .captures(&query, tree.root_node(), self.source.as_bytes())
+                    .map(|x| x.0.captures)
+                    .flatten()
+                    .any(|c| c.node.contains_lsp_pos(pos));
+                if on_policy_acl_name {
+                    MudLocation::AclNameValue
+                } else {
+                    MudLocation::Unknown
+                }
+            }
+        }
+    }
+}
+
+enum MudLocation {
+    AclNameValue,
+    Unknown,
+}
+
+trait ContainsPos {
+    fn contains_lsp_pos(&self, pos: Position) -> bool;
+}
+
+impl ContainsPos for Node<'_> {
+    fn contains_lsp_pos(&self, pos: Position) -> bool {
+        let start = self.start_position();
+        let end = self.end_position();
+
+        let start: Position = Position {
+            line: start.row as u32,
+            character: start.column as u32,
+        };
+        let end: Position = Position {
+            line: end.row as u32,
+            character: end.column as u32,
+        };
+
+        pos >= start && pos <= end
     }
 }
