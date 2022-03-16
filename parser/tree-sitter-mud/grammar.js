@@ -3,7 +3,7 @@ module.exports = grammar({
 
   rules: {
 
-    source: $ => json_object(seq($.ietf_mud,',',$.ietf_acls)),
+    source: $ => choice(json_object(seq($.ietf_mud,',',$.ietf_acls)), $.json_object_fallback),
 
     ietf_mud: $ => json_pair('"ietf-mud:mud"'
                             ,json_object(comma_separated(choice($.mud_version

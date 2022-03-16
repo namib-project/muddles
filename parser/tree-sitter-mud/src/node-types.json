@@ -753,6 +753,10 @@
         {
           "type": "ietf_mud",
           "named": true
+        },
+        {
+          "type": "json_object_fallback",
+          "named": true
         }
       ]
     }
