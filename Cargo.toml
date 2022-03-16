@@ -1,0 +1,11 @@
+[package]
+name = "muddles"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tree-sitter-mud = { path = "./parser/tree-sitter-mud/" }
+tower-lsp = "0.15.1"
+tokio = { version = "1.17.0", features = ["full"] }

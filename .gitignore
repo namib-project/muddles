@@ -1,2 +1,10 @@
 /parser/tree-sitter-mud/node_modules/
 /parser/tree-sitter-mud/package-lock.json
+
+
+# muddles target
+/target
+# bindings target
+/parser/tree-sitter-mud/target/
+# bindings lock file
+/parser/tree-sitter-mud/Cargo.lock
