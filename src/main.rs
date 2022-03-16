@@ -115,6 +115,7 @@ impl LanguageServer for Backend {
                         .iter()
                         .map(|s| CompletionItem::new_simple(s.clone(), "ACL name".to_string()))
                         .collect(),
+                    MudLocation::CacheValidity => vec![],
                     MudLocation::Unknown => vec![],
                 },
                 None => vec![],
@@ -124,13 +125,33 @@ impl LanguageServer for Backend {
         Ok(Some(CompletionResponse::Array(completions)))
     }
 
-    async fn hover(&self, _params: HoverParams) -> Result<Option<Hover>> {
+    async fn hover(&self, params: HoverParams) -> Result<Option<Hover>> {
         debug!("was asked for hover info");
 
-        let response = "you're hovering!".to_string();
+        let response = {
+            let docs = self.docs.read().unwrap();
+            match docs.get(
+                &params
+                    .text_document_position_params
+                    .text_document
+                    .uri
+                    .to_string(),
+            ) {
+                Some(doc) => {
+                    match doc.get_mud_location(params.text_document_position_params.position) {
+                        MudLocation::CacheValidity => CACHE_VALIDITY_DOCSTRING.to_string(),
+                        _ => "no info available".to_string(),
+                    }
+                }
+                None => "no info available".to_string(),
+            }
+        };
 
         Ok(Some(Hover {
-            contents: HoverContents::Scalar(MarkedString::String(response)),
+            contents: HoverContents::Markup(MarkupContent {
+                kind: MarkupKind::PlainText,
+                value: response,
+            }),
             range: None,
         }))
     }
@@ -261,22 +282,41 @@ impl Document {
         match &self.tree {
             None => MudLocation::Unknown,
             Some(tree) => {
-                let query = Query::new(
-                    tree_sitter_mud::language(),
-                    "(policy_acl_name name: (string ((string_quoted_content) @insertable)))",
-                )
-                .expect("unable to create query");
-                let mut cursor = QueryCursor::new();
-                let on_policy_acl_name = cursor
-                    .captures(&query, tree.root_node(), self.source.as_bytes())
-                    .map(|x| x.0.captures)
-                    .flatten()
-                    .any(|c| c.node.contains_lsp_pos(pos));
-                if on_policy_acl_name {
-                    MudLocation::AclNameValue
-                } else {
-                    MudLocation::Unknown
+                {
+                    let query = Query::new(
+                        tree_sitter_mud::language(),
+                        "(policy_acl_name name: (string ((string_quoted_content) @insertable)))",
+                    )
+                    .expect("unable to create query");
+                    let mut cursor = QueryCursor::new();
+                    if cursor
+                        .captures(&query, tree.root_node(), self.source.as_bytes())
+                        .map(|x| x.0.captures)
+                        .flatten()
+                        .any(|c| c.node.contains_lsp_pos(pos))
+                    {
+                        return MudLocation::AclNameValue;
+                    }
                 }
+
+                {
+                    let query = Query::new(
+                        tree_sitter_mud::language(),
+                        r#"(cache_validity) @cache_validity"#,
+                    )
+                    .expect("unable to create query");
+                    let mut cursor = QueryCursor::new();
+                    if cursor
+                        .captures(&query, tree.root_node(), self.source.as_bytes())
+                        .map(|x| x.0.captures)
+                        .flatten()
+                        .any(|c| c.node.contains_lsp_pos(pos))
+                    {
+                        return MudLocation::CacheValidity;
+                    }
+                }
+
+                return MudLocation::Unknown;
             }
         }
     }
@@ -284,6 +324,7 @@ impl Document {
 
 enum MudLocation {
     AclNameValue,
+    CacheValidity,
     Unknown,
 }
 
@@ -308,3 +349,17 @@ impl ContainsPos for Node<'_> {
         pos >= start && pos <= end
     }
 }
+
+const CACHE_VALIDITY_DOCSTRING: &str = r#"
+3.5.  cache-validity
+
+   This uint8 is the period of time in hours that a network management
+   station MUST wait since its last retrieval before checking for an
+   update.  It is RECOMMENDED that this value be no less than 24, and it
+   MUST NOT be more than 168 for any Thing that is supported.  This
+   period SHOULD be no shorter than any period determined through HTTP
+   caching directives (e.g., "cache-control" or "Expires").  N.B., the
+   expiring of this timer does not require the MUD manager to discard
+   the MUD file, nor terminate access to a Thing.  See Section 16 for
+   more information.
+"#;
