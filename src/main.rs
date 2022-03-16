@@ -1,14 +1,17 @@
+use std::collections::HashMap;
+use std::sync::{Arc, RwLock};
+
 use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{Client, LanguageServer, LspService, Server};
 
-use tree_sitter::Parser;
+use tree_sitter::{Parser, Tree};
 
 use log::debug;
 
-#[derive(Debug)]
 struct Backend {
     client: Client,
+    docs: Arc<RwLock<HashMap<String, Document>>>,
 }
 
 #[tower_lsp::async_trait]
@@ -24,12 +27,31 @@ impl LanguageServer for Backend {
         Ok(result)
     }
 
-    async fn did_open(&self, _params: DidOpenTextDocumentParams) {
+    async fn did_open(&self, params: DidOpenTextDocumentParams) {
         debug!("did open");
+        {
+            let mut doc = Document::new();
+            doc.update(params.text_document.text);
+
+            let mut docs = self.docs.write().unwrap();
+            docs.insert(params.text_document.uri.to_string(), doc);
+        }
     }
 
     async fn did_change(&self, params: DidChangeTextDocumentParams) {
         debug!("change notified");
+
+        {
+            let mut doc = Document::new();
+            // NOTE(ja_he):
+            //  for now we use _full_ synchronization, meaning we get the complete contents of the
+            //  document after the change. we _should_ look to use incremental changes, but I think
+            //  it might be a bit of a pain to get it to work with treesitter.
+            doc.update(params.content_changes[0].text.clone());
+
+            let mut docs = self.docs.write().unwrap();
+            docs.insert(params.text_document.uri.to_string(), doc);
+        }
 
         let diagnostics: Vec<Diagnostic> = vec![];
 
@@ -94,9 +116,40 @@ async fn main() {
     let stdin = tokio::io::stdin();
     let stdout = tokio::io::stdout();
 
-    let (service, messages) = LspService::new(|client| Backend { client });
+    let (service, messages) = LspService::new(|client| Backend {
+        client,
+        docs: Arc::new(RwLock::new(HashMap::new())),
+    });
     Server::new(stdin, stdout)
         .interleave(messages)
         .serve(service)
         .await;
+}
+
+struct Document {
+    parser: Parser,
+    tree: Option<Tree>,
+    source: String,
+}
+
+impl Document {
+    fn new() -> Document {
+        let mut parser = Parser::new();
+        if let Err(err) = parser.set_language(tree_sitter_mud::language()) {
+            panic!("{}", err);
+        }
+        Document {
+            parser,
+            tree: None,
+            source: "".to_string(),
+        }
+    }
+
+    fn update(&mut self, new_source: String) {
+        self.source = new_source;
+        self.tree = self.parser.parse(&self.source, None);
+        if self.tree.is_none() {
+            panic!("after parsing, tree is None");
+        }
+    }
 }
