@@ -132,6 +132,22 @@
     }
   },
   {
+    "type": "controller",
+    "named": true,
+    "fields": {
+      "uri": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "destination_port",
     "named": true,
     "fields": {},
@@ -448,6 +464,37 @@
     }
   },
   {
+    "type": "local_networks",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "null_valued",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "manufacturer",
+    "named": true,
+    "fields": {
+      "authority": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "matches",
     "named": true,
     "fields": {},
@@ -502,6 +549,22 @@
     }
   },
   {
+    "type": "model",
+    "named": true,
+    "fields": {
+      "uri": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "mud_matches_augment",
     "named": true,
     "fields": {},
@@ -510,7 +573,31 @@
       "required": false,
       "types": [
         {
+          "type": "controller",
+          "named": true
+        },
+        {
           "type": "json_pair_fallback",
+          "named": true
+        },
+        {
+          "type": "local_networks",
+          "named": true
+        },
+        {
+          "type": "manufacturer",
+          "named": true
+        },
+        {
+          "type": "model",
+          "named": true
+        },
+        {
+          "type": "my_controller",
+          "named": true
+        },
+        {
+          "type": "same_manufacturer",
           "named": true
         }
       ]
@@ -547,6 +634,26 @@
         ]
       }
     }
+  },
+  {
+    "type": "my_controller",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "null_valued",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "null_valued",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "policy",
@@ -611,6 +718,21 @@
         },
         {
           "type": "port_range",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "same_manufacturer",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "null_valued",
           "named": true
         }
       ]
@@ -793,6 +915,10 @@
     "named": false
   },
   {
+    "type": "\"controller\"",
+    "named": false
+  },
+  {
     "type": "\"destination-port\"",
     "named": false
   },
@@ -853,11 +979,23 @@
     "named": false
   },
   {
+    "type": "\"local-networks\"",
+    "named": false
+  },
+  {
     "type": "\"lower-port\"",
     "named": false
   },
   {
+    "type": "\"manufacturer\"",
+    "named": false
+  },
+  {
     "type": "\"matches\"",
+    "named": false
+  },
+  {
+    "type": "\"model\"",
     "named": false
   },
   {
@@ -866,6 +1004,10 @@
   },
   {
     "type": "\"mud-version\"",
+    "named": false
+  },
+  {
+    "type": "\"my-controller\"",
     "named": false
   },
   {
@@ -886,6 +1028,10 @@
   },
   {
     "type": "\"reject\"",
+    "named": false
+  },
+  {
+    "type": "\"same-manufacturer\"",
     "named": false
   },
   {

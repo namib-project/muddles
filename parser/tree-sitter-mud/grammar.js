@@ -1,5 +1,5 @@
 module.exports = grammar({
-  name: 'MUD',
+  name: 'mud',
 
   rules: {
 
@@ -39,7 +39,13 @@ module.exports = grammar({
                                                            ,$.json_pair_fallback))),
 
     mud_matches_augment: $ => json_pair('"ietf-mud:mud"'
-                                       ,json_object(comma_separated(choice($.json_pair_fallback)))), // TODO
+                                       ,json_object(comma_separated(choice($.controller
+                                                                          ,$.my_controller
+                                                                          ,$.manufacturer
+                                                                          ,$.same_manufacturer
+                                                                          ,$.local_networks
+                                                                          ,$.model
+                                                                          ,$.json_pair_fallback)))),
 
     eth_matches: $ => json_pair('"eth"', json_object(comma_separated($.json_pair_fallback))),
 
@@ -64,6 +70,14 @@ module.exports = grammar({
                                                                   ,$.json_pair_fallback)))), // TODO
 
     icmp_matches: $ => json_pair('"icmp"', json_object(comma_separated($.json_pair_fallback))), // TODO
+
+
+    controller:        $ => json_pair('"controller"',         field('uri',       $.string)),
+    my_controller:     $ => json_pair('"my-controller"',                         $.null_valued),
+    manufacturer:      $ => json_pair('"manufacturer"',       field('authority', $.string)),
+    same_manufacturer: $ => json_pair('"same-manufacturer"',                     $.null_valued),
+    local_networks:    $ => json_pair('"local-networks"',                        $.null_valued),
+    model:             $ => json_pair('"model"',              field('uri',       $.string)),
 
     ip_header_proto: $ => json_pair('"protocol"', $.number),
     ietf_acldns: $ => json_pair(seq('"ietf-acldns:',choice('src-dnsname','dst-dnsname'),'"')
@@ -103,6 +117,8 @@ module.exports = grammar({
                                           ,/(\"|\\|\/|b|f|n|r|t|u)/)),
     number: $ => /\d+/,
     bool: $ => choice('true', 'false'),
+
+    null_valued: $ => seq('[', 'null', ']'),
 
     json_value_fallback: $ => choice($.json_object_fallback
                                     ,$.json_array_fallback

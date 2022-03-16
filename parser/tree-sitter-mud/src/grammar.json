@@ -1,5 +1,5 @@
 {
-  "name": "MUD",
+  "name": "mud",
   "rules": {
     "source": {
       "type": "SEQ",
@@ -645,6 +645,30 @@
                       "members": [
                         {
                           "type": "SYMBOL",
+                          "name": "controller"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "my_controller"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "manufacturer"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "same_manufacturer"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "local_networks"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "model"
+                        },
+                        {
+                          "type": "SYMBOL",
                           "name": "json_pair_fallback"
                         }
                       ]
@@ -661,6 +685,30 @@
                           {
                             "type": "CHOICE",
                             "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "controller"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "my_controller"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "manufacturer"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "same_manufacturer"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "local_networks"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "model"
+                              },
                               {
                                 "type": "SYMBOL",
                                 "name": "json_pair_fallback"
@@ -1156,6 +1204,120 @@
               "value": "}"
             }
           ]
+        }
+      ]
+    },
+    "controller": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\"controller\""
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "FIELD",
+          "name": "uri",
+          "content": {
+            "type": "SYMBOL",
+            "name": "string"
+          }
+        }
+      ]
+    },
+    "my_controller": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\"my-controller\""
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "null_valued"
+        }
+      ]
+    },
+    "manufacturer": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\"manufacturer\""
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "FIELD",
+          "name": "authority",
+          "content": {
+            "type": "SYMBOL",
+            "name": "string"
+          }
+        }
+      ]
+    },
+    "same_manufacturer": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\"same-manufacturer\""
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "null_valued"
+        }
+      ]
+    },
+    "local_networks": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\"local-networks\""
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "null_valued"
+        }
+      ]
+    },
+    "model": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\"model\""
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "FIELD",
+          "name": "uri",
+          "content": {
+            "type": "SYMBOL",
+            "name": "string"
+          }
         }
       ]
     },
@@ -1947,6 +2109,23 @@
         {
           "type": "STRING",
           "value": "false"
+        }
+      ]
+    },
+    "null_valued": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "["
+        },
+        {
+          "type": "STRING",
+          "value": "null"
+        },
+        {
+          "type": "STRING",
+          "value": "]"
         }
       ]
     },

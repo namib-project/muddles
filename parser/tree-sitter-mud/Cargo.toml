@@ -1,5 +1,5 @@
 [package]
-name = "tree-sitter-MUD"
+name = "tree-sitter-mud"
 description = "MUD grammar for the tree-sitter parsing library"
 version = "0.0.1"
 keywords = ["incremental", "parsing", "MUD"]
