@@ -8,7 +8,7 @@
       "required": false,
       "types": [
         {
-          "type": "string",
+          "type": "policy_acl_name",
           "named": true
         }
       ]
@@ -68,6 +68,22 @@
     }
   },
   {
+    "type": "acl_name",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "acl_object",
     "named": true,
     "fields": {},
@@ -77,6 +93,10 @@
       "types": [
         {
           "type": "ace",
+          "named": true
+        },
+        {
+          "type": "acl_name",
           "named": true
         },
         {
@@ -668,6 +688,22 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "policy_acl_name",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
