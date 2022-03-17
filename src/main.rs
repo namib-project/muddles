@@ -24,6 +24,7 @@ impl LanguageServer for Backend {
         result.capabilities.text_document_sync =
             Some(TextDocumentSyncCapability::Kind(TextDocumentSyncKind::FULL));
         result.capabilities.completion_provider = Some(CompletionOptions::default());
+        result.capabilities.code_action_provider = Some(CodeActionProviderCapability::Simple(true));
         Ok(result)
     }
 
@@ -123,6 +124,44 @@ impl LanguageServer for Backend {
         }
 
         Ok(Some(CompletionResponse::Array(completions)))
+    }
+
+    async fn code_action(&self, params: CodeActionParams) -> Result<Option<CodeActionResponse>> {
+        let ietf_mud_pos: Option<Position> = {
+            let docs = self.docs.read().unwrap();
+            match docs.get(&params.text_document.uri.to_string()) {
+                Some(doc) => doc.find_ietf_mud_start(),
+                None => None,
+            }
+        };
+
+        match ietf_mud_pos {
+            Some(ietf_mud_pos) => {
+                let mut edits = HashMap::new();
+
+                edits.insert(
+                    params.text_document.uri,
+                    vec![TextEdit::new(
+                        Range::new(ietf_mud_pos, ietf_mud_pos),
+                        "    \"mud-version\" : 1,\n".to_string(),
+                    )],
+                );
+
+                let response = vec![CodeActionOrCommand::CodeAction(CodeAction {
+                    title: "Insert mud-version key with value 1 under ietf-mud:mud".to_string(),
+                    kind: None,
+                    diagnostics: None,
+                    edit: Some(WorkspaceEdit::new(edits)),
+                    command: None,
+                    is_preferred: None,
+                    disabled: None,
+                    data: None,
+                })];
+
+                Ok(Some(response))
+            }
+            None => Ok(None),
+        }
     }
 
     async fn hover(&self, params: HoverParams) -> Result<Option<Hover>> {
@@ -275,6 +314,31 @@ impl Document {
         }
     }
 
+    fn find_ietf_mud_start(&self) -> Option<Position> {
+        match &self.tree {
+            None => None,
+            Some(tree) => {
+                let query = Query::new(tree_sitter_mud::language(), r#"(ietf_mud "{" @type)"#)
+                    .expect("unable to create query");
+                let mut cursor = QueryCursor::new();
+                cursor
+                    .captures(&query, tree.root_node(), self.source.as_bytes())
+                    .map(|x| x.0.captures)
+                    .flatten()
+                    .map(|x| {
+                        let brace_pos = x.node.end_position();
+                        let next_line_start = Position {
+                            line: (brace_pos.row + 1) as u32,
+                            character: 0,
+                        };
+                        Some(next_line_start)
+                    })
+                    .next()
+                    .unwrap_or(None)
+            }
+        }
+    }
+
     fn get_mud_location(&self, pos: Position) -> MudLocation {
         // TODO(ja_he):
         //  definite performance concerns with this approach once we add more stuff to
@@ -316,7 +380,7 @@ impl Document {
                     }
                 }
 
-                return MudLocation::Unknown;
+                MudLocation::Unknown
             }
         }
     }
