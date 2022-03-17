@@ -41,10 +41,16 @@ impl LanguageServer for Backend {
             diagnostics = docs
                 .get(&params.text_document.uri.to_string())
                 .unwrap()
-                .get_errors()
+                .get_parser_errors()
                 .iter()
                 .map(|range| Diagnostic::new_simple(*range, "parser error".to_string()))
                 .collect();
+            diagnostics.append(
+                &mut docs
+                    .get(&params.text_document.uri.to_string())
+                    .unwrap()
+                    .get_warnings(),
+            );
         }
         self.client
             .publish_diagnostics(params.text_document.uri, diagnostics, None)
@@ -68,10 +74,16 @@ impl LanguageServer for Backend {
             diagnostics = docs
                 .get(&params.text_document.uri.to_string())
                 .unwrap()
-                .get_errors()
+                .get_parser_errors()
                 .iter()
                 .map(|range| Diagnostic::new_simple(*range, "parser error".to_string()))
                 .collect();
+            diagnostics.append(
+                &mut docs
+                    .get(&params.text_document.uri.to_string())
+                    .unwrap()
+                    .get_warnings(),
+            );
         }
 
         self.client
@@ -246,7 +258,7 @@ impl Document {
         }
     }
 
-    fn get_errors(&self) -> Vec<Range> {
+    fn get_parser_errors(&self) -> Vec<Range> {
         match &self.tree {
             None => {
                 error!("tree was None when looking for parser errors");
@@ -284,6 +296,58 @@ impl Document {
                         })
                     })
                     .flatten()
+                    .collect()
+            }
+        }
+    }
+
+    fn get_warnings(&self) -> Vec<Diagnostic> {
+        match &self.tree {
+            None => {
+                error!("tree was None when linting");
+                vec![]
+            }
+            Some(tree) => {
+                let query = Query::new(
+                    tree_sitter_mud::language(),
+                    r#"
+(json_pair_fallback) @unknown
+(json_value_fallback) @unknown
+(json_array_fallback) @unknown
+(json_object_fallback) @unknown"#,
+                )
+                .expect("unable to create query");
+                let mut cursor = QueryCursor::new();
+                cursor
+                    .captures(&query, tree.root_node(), self.source.as_bytes())
+                    .map(|c| {
+                        c.0.captures.iter().map(|x| {
+                            let start = x.node.start_position();
+                            let end = x.node.end_position();
+                            Range {
+                                start: Position {
+                                    line: start.row as u32,
+                                    character: start.column as u32,
+                                },
+                                end: Position {
+                                    line: end.row as u32,
+                                    character: end.column as u32,
+                                },
+                            }
+                        })
+                    })
+                    .flatten()
+                    .map(|range| {
+                        Diagnostic::new(
+                            range,
+                            Some(DiagnosticSeverity::WARNING),
+                            None,
+                            Some("muddles".to_string()),
+                            "not part of MUD specification".to_string(),
+                            None,
+                            None,
+                        )
+                    })
                     .collect()
             }
         }
