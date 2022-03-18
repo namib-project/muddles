@@ -308,47 +308,87 @@ impl Document {
                 vec![]
             }
             Some(tree) => {
-                let query = Query::new(
-                    tree_sitter_mud::language(),
-                    r#"
+                let fallback_warnings: Vec<Diagnostic> = {
+                    let query = Query::new(
+                        tree_sitter_mud::language(),
+                        r#"
 (json_pair_fallback) @unknown
 (json_value_fallback) @unknown
 (json_array_fallback) @unknown
 (json_object_fallback) @unknown"#,
-                )
-                .expect("unable to create query");
-                let mut cursor = QueryCursor::new();
-                cursor
-                    .captures(&query, tree.root_node(), self.source.as_bytes())
-                    .map(|c| {
-                        c.0.captures.iter().map(|x| {
-                            let start = x.node.start_position();
-                            let end = x.node.end_position();
-                            Range {
-                                start: Position {
-                                    line: start.row as u32,
-                                    character: start.column as u32,
-                                },
-                                end: Position {
-                                    line: end.row as u32,
-                                    character: end.column as u32,
-                                },
-                            }
+                    )
+                    .expect("unable to create query");
+                    let mut cursor = QueryCursor::new();
+                    cursor
+                        .captures(&query, tree.root_node(), self.source.as_bytes())
+                        .map(|c| {
+                            c.0.captures.iter().map(|x| {
+                                let start = x.node.start_position();
+                                let end = x.node.end_position();
+                                Range {
+                                    start: Position {
+                                        line: start.row as u32,
+                                        character: start.column as u32,
+                                    },
+                                    end: Position {
+                                        line: end.row as u32,
+                                        character: end.column as u32,
+                                    },
+                                }
+                            })
                         })
-                    })
-                    .flatten()
-                    .map(|range| {
-                        Diagnostic::new(
-                            range,
-                            Some(DiagnosticSeverity::WARNING),
-                            None,
-                            Some("muddles".to_string()),
-                            "not part of MUD specification".to_string(),
-                            None,
-                            None,
-                        )
-                    })
-                    .collect()
+                        .flatten()
+                        .map(|range| {
+                            Diagnostic::new(
+                                range,
+                                Some(DiagnosticSeverity::WARNING),
+                                None,
+                                Some("muddles".to_string()),
+                                "not part of MUD specification".to_string(),
+                                None,
+                                None,
+                            )
+                        })
+                        .collect()
+                };
+                let eth_warning: Vec<Diagnostic> = {
+                    let query = Query::new(tree_sitter_mud::language(), r#"(eth_matches) @eth"#)
+                        .expect("unable to create query");
+                    let mut cursor = QueryCursor::new();
+                    cursor
+                        .captures(&query, tree.root_node(), self.source.as_bytes())
+                        .map(|c| {
+                            c.0.captures.iter().map(|x| {
+                                let start = x.node.start_position();
+                                let end = x.node.end_position();
+                                Range {
+                                    start: Position {
+                                        line: start.row as u32,
+                                        character: start.column as u32,
+                                    },
+                                    end: Position {
+                                        line: end.row as u32,
+                                        character: end.column as u32,
+                                    },
+                                }
+                            })
+                        })
+                        .flatten()
+                        .map(|range| {
+                            Diagnostic::new(
+                                range,
+                                Some(DiagnosticSeverity::WARNING),
+                                None,
+                                Some("muddles".to_string()),
+                                "RFC8520 omits support for 'match-on-eth' which the '/acl:acls/acl:acl/acl:aces/acl:ace/acl:matches/' node 'eth' depends on".to_string(),
+                                None,
+                                None,
+                            )
+                        })
+                        .collect()
+                };
+
+                fallback_warnings.into_iter().chain(eth_warning).collect()
             }
         }
     }

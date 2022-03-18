@@ -33,7 +33,8 @@ module.exports = grammar({
     acl_name:        $ => json_pair('"name"', field('name', $.string)),
     policy_acl_name: $ => json_pair('"name"', field('name', $.string)),
 
-    matches_object: $ => json_object(comma_separated(choice($.ipv4_matches
+    matches_object: $ => json_object(comma_separated(choice($.eth_matches
+                                                           ,$.ipv4_matches
                                                            ,$.ipv6_matches
                                                            ,$.tcp_matches
                                                            ,$.udp_matches

@@ -568,6 +568,10 @@
                   "members": [
                     {
                       "type": "SYMBOL",
+                      "name": "eth_matches"
+                    },
+                    {
+                      "type": "SYMBOL",
                       "name": "ipv4_matches"
                     },
                     {
@@ -608,6 +612,10 @@
                       {
                         "type": "CHOICE",
                         "members": [
+                          {
+                            "type": "SYMBOL",
+                            "name": "eth_matches"
+                          },
                           {
                             "type": "SYMBOL",
                             "name": "ipv4_matches"

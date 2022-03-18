@@ -188,6 +188,21 @@
     "fields": {}
   },
   {
+    "type": "eth_matches",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "json_pair_fallback",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "forwarding_action",
     "named": true,
     "fields": {},
@@ -537,6 +552,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "eth_matches",
+          "named": true
+        },
         {
           "type": "icmp_matches",
           "named": true
