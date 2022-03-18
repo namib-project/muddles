@@ -9,6 +9,38 @@ use tree_sitter::{Node, Parser, Query, QueryCursor, Tree};
 
 use log::{debug, error};
 
+macro_rules! query_for_nodes {
+    ($query:expr,$node:expr,$source:expr) => {
+        QueryCursor::new()
+            .captures(
+                &Query::new(tree_sitter_mud::language(), $query).expect("unable to create query"),
+                $node,
+                $source.as_bytes(),
+            )
+            .map(|x| x.0.captures)
+            .flatten()
+    };
+}
+
+macro_rules! query_for_ranges {
+    ($query:expr,$node:expr,$source:expr) => {
+        query_for_nodes!($query, $node, $source).map(|x| {
+            let start = x.node.start_position();
+            let end = x.node.end_position();
+            Range {
+                start: Position {
+                    line: start.row as u32,
+                    character: start.column as u32,
+                },
+                end: Position {
+                    line: end.row as u32,
+                    character: end.column as u32,
+                },
+            }
+        })
+    };
+}
+
 struct Backend {
     client: Client,
     docs: Arc<RwLock<HashMap<String, Document>>>,
@@ -274,29 +306,7 @@ impl Document {
                 }]
             }
             Some(tree) => {
-                let query = Query::new(tree_sitter_mud::language(), "(ERROR) @error")
-                    .expect("unable to create query");
-                let mut cursor = QueryCursor::new();
-                cursor
-                    .captures(&query, tree.root_node(), self.source.as_bytes())
-                    .map(|c| {
-                        c.0.captures.iter().map(|x| {
-                            let start = x.node.start_position();
-                            let end = x.node.end_position();
-                            Range {
-                                start: Position {
-                                    line: start.row as u32,
-                                    character: start.column as u32,
-                                },
-                                end: Position {
-                                    line: end.row as u32,
-                                    character: end.column as u32,
-                                },
-                            }
-                        })
-                    })
-                    .flatten()
-                    .collect()
+                query_for_ranges!("(ERROR) @error", tree.root_node(), self.source).collect()
             }
         }
     }
@@ -309,35 +319,7 @@ impl Document {
             }
             Some(tree) => {
                 let fallback_warnings: Vec<Diagnostic> = {
-                    let query = Query::new(
-                        tree_sitter_mud::language(),
-                        r#"
-(json_pair_fallback) @unknown
-(json_value_fallback) @unknown
-(json_array_fallback) @unknown
-(json_object_fallback) @unknown"#,
-                    )
-                    .expect("unable to create query");
-                    let mut cursor = QueryCursor::new();
-                    cursor
-                        .captures(&query, tree.root_node(), self.source.as_bytes())
-                        .map(|c| {
-                            c.0.captures.iter().map(|x| {
-                                let start = x.node.start_position();
-                                let end = x.node.end_position();
-                                Range {
-                                    start: Position {
-                                        line: start.row as u32,
-                                        character: start.column as u32,
-                                    },
-                                    end: Position {
-                                        line: end.row as u32,
-                                        character: end.column as u32,
-                                    },
-                                }
-                            })
-                        })
-                        .flatten()
+                    query_for_ranges!(FALLBACK_QUERY, tree.root_node(), self.source)
                         .map(|range| {
                             Diagnostic::new(
                                 range,
@@ -352,35 +334,18 @@ impl Document {
                         .collect()
                 };
                 let eth_warning: Vec<Diagnostic> = {
-                    let query = Query::new(tree_sitter_mud::language(), r#"(eth_matches) @eth"#)
-                        .expect("unable to create query");
-                    let mut cursor = QueryCursor::new();
-                    cursor
-                        .captures(&query, tree.root_node(), self.source.as_bytes())
-                        .map(|c| {
-                            c.0.captures.iter().map(|x| {
-                                let start = x.node.start_position();
-                                let end = x.node.end_position();
-                                Range {
-                                    start: Position {
-                                        line: start.row as u32,
-                                        character: start.column as u32,
-                                    },
-                                    end: Position {
-                                        line: end.row as u32,
-                                        character: end.column as u32,
-                                    },
-                                }
-                            })
-                        })
-                        .flatten()
+                    query_for_ranges!("(eth_matches) @eth", tree.root_node(), self.source)
                         .map(|range| {
                             Diagnostic::new(
                                 range,
                                 Some(DiagnosticSeverity::WARNING),
                                 None,
                                 Some("muddles".to_string()),
-                                "RFC8520 omits support for 'match-on-eth' which the '/acl:acls/acl:acl/acl:aces/acl:ace/acl:matches/' node 'eth' depends on".to_string(),
+                                concat!(
+                                    "RFC8520 omits support for 'match-on-eth'\n",
+                                    "which the '.../acl:matches/' node 'eth' depends on."
+                                )
+                                .to_string(),
                                 None,
                                 None,
                             )
@@ -396,25 +361,18 @@ impl Document {
     fn get_acl_names(&self) -> Vec<String> {
         match &self.tree {
             None => vec![],
-            Some(tree) => {
-                let query = Query::new(
-                    tree_sitter_mud::language(),
-                    "(acl_name name: (string ((string_quoted_content) @name)))",
-                )
-                .expect("unable to create query");
-                let mut cursor = QueryCursor::new();
-                cursor
-                    .captures(&query, tree.root_node(), self.source.as_bytes())
-                    .map(|x| x.0.captures)
-                    .flatten()
-                    .map(|x| {
-                        x.node
-                            .utf8_text(self.source.as_bytes())
-                            .expect("cannot get node content")
-                            .to_string()
-                    })
-                    .collect()
-            }
+            Some(tree) => query_for_nodes!(
+                "(acl_name name: (string ((string_quoted_content) @name)))",
+                tree.root_node(),
+                self.source
+            )
+            .map(|x| {
+                x.node
+                    .utf8_text(self.source.as_bytes())
+                    .expect("cannot get node content")
+                    .to_string()
+            })
+            .collect(),
         }
     }
 
@@ -422,13 +380,7 @@ impl Document {
         match &self.tree {
             None => None,
             Some(tree) => {
-                let query = Query::new(tree_sitter_mud::language(), r#"(ietf_mud "{" @type)"#)
-                    .expect("unable to create query");
-                let mut cursor = QueryCursor::new();
-                cursor
-                    .captures(&query, tree.root_node(), self.source.as_bytes())
-                    .map(|x| x.0.captures)
-                    .flatten()
+                query_for_nodes!(r#"(ietf_mud "{" @type)"#, tree.root_node(), self.source)
                     .map(|x| {
                         let brace_pos = x.node.end_position();
                         let next_line_start = Position {
@@ -451,34 +403,24 @@ impl Document {
             None => MudLocation::Unknown,
             Some(tree) => {
                 {
-                    let query = Query::new(
-                        tree_sitter_mud::language(),
+                    if query_for_nodes!(
                         "(policy_acl_name name: (string ((string_quoted_content) @insertable)))",
+                        tree.root_node(),
+                        self.source
                     )
-                    .expect("unable to create query");
-                    let mut cursor = QueryCursor::new();
-                    if cursor
-                        .captures(&query, tree.root_node(), self.source.as_bytes())
-                        .map(|x| x.0.captures)
-                        .flatten()
-                        .any(|c| c.node.contains_lsp_pos(pos))
+                    .any(|c| c.node.contains_lsp_pos(pos))
                     {
                         return MudLocation::AclNameValue;
                     }
                 }
 
                 {
-                    let query = Query::new(
-                        tree_sitter_mud::language(),
+                    if query_for_nodes!(
                         r#"(cache_validity) @cache_validity"#,
+                        tree.root_node(),
+                        self.source
                     )
-                    .expect("unable to create query");
-                    let mut cursor = QueryCursor::new();
-                    if cursor
-                        .captures(&query, tree.root_node(), self.source.as_bytes())
-                        .map(|x| x.0.captures)
-                        .flatten()
-                        .any(|c| c.node.contains_lsp_pos(pos))
+                    .any(|c| c.node.contains_lsp_pos(pos))
                     {
                         return MudLocation::CacheValidity;
                     }
@@ -531,3 +473,8 @@ const CACHE_VALIDITY_DOCSTRING: &str = r#"
    the MUD file, nor terminate access to a Thing.  See Section 16 for
    more information.
 "#;
+
+const FALLBACK_QUERY: &str = r#"(json_pair_fallback) @unknown
+(json_value_fallback) @unknown
+(json_array_fallback) @unknown
+(json_object_fallback) @unknown"#;
