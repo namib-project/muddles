@@ -19,7 +19,7 @@ module.exports = grammar({
     ietf_acls : $ => json_pair('"ietf-access-control-list:access-lists"'
                               ,$.acl),
     acl: $ => json_object(json_pair('"acl"', json_list($.acl_object))),
-    acl_object: $ => json_object(seq($.acl_name,','
+    acl_object: $ => json_object(seq($.acl_name_def,','
                                     ,json_pair('"type"', $.string),','
                                     ,json_pair('"aces"', $.ace))),
     ace: $ => json_object(json_pair('"ace"'
@@ -30,7 +30,7 @@ module.exports = grammar({
     matches: $ => $.matches_object,
     actions: $ => choice($.forwarding_action, $.json_object_fallback),
 
-    acl_name:        $ => json_pair('"name"', field('name', $.string)),
+    acl_name_def:    $ => json_pair('"name"', field('name', $.string)),
     policy_acl_name: $ => json_pair('"name"', field('name', $.string)),
 
     matches_object: $ => json_object(comma_separated(choice($.eth_matches

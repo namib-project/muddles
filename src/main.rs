@@ -362,7 +362,7 @@ impl Document {
         match &self.tree {
             None => vec![],
             Some(tree) => query_for_nodes!(
-                "(acl_name name: (string ((string_quoted_content) @name)))",
+                "(acl_name_def name: (string ((string_quoted_content) @name)))",
                 tree.root_node(),
                 self.source
             )

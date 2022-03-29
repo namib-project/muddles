@@ -282,7 +282,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "acl_name"
+              "name": "acl_name_def"
             },
             {
               "type": "STRING",
@@ -508,7 +508,7 @@
         }
       ]
     },
-    "acl_name": {
+    "acl_name_def": {
       "type": "SEQ",
       "members": [
         {

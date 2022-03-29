@@ -68,7 +68,7 @@
     }
   },
   {
-    "type": "acl_name",
+    "type": "acl_name_def",
     "named": true,
     "fields": {
       "name": {
@@ -96,7 +96,7 @@
           "named": true
         },
         {
-          "type": "acl_name",
+          "type": "acl_name_def",
           "named": true
         },
         {
