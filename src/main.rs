@@ -22,6 +22,21 @@ macro_rules! query_for_nodes {
     };
 }
 
+macro_rules! to_lsp_range {
+    ($node:expr) => {
+        Range {
+            start: Position {
+                line: $node.start_position().row as u32,
+                character: $node.start_position().column as u32,
+            },
+            end: Position {
+                line: $node.end_position().row as u32,
+                character: $node.end_position().column as u32,
+            },
+        }
+    };
+}
+
 macro_rules! query_for_ranges {
     ($query:expr,$node:expr,$source:expr) => {
         query_for_nodes!($query, $node, $source).map(|x| {
@@ -125,14 +140,25 @@ impl LanguageServer for Backend {
 
     async fn goto_definition(
         &self,
-        _: GotoDefinitionParams,
+        params: GotoDefinitionParams,
     ) -> Result<Option<GotoDefinitionResponse>> {
         debug!("got a def request");
 
-        Ok(Some(GotoDefinitionResponse::Scalar(Location::new(
-            Url::from_file_path("/tmp/out").unwrap(),
-            Range::default(),
-        ))))
+        let url = params.text_document_position_params.text_document.uri;
+        let pos = params.text_document_position_params.position;
+
+        let locations = {
+            let docs = self.docs.read().unwrap();
+            let doc = docs
+                .get(url.as_str())
+                .unwrap_or_else(|| panic!("no doc '{}' on goto-definition reqest!", url));
+            doc.get_definition_location(pos)
+        }
+        .iter()
+        .map(|r| Location::new(url.clone(), *r))
+        .collect();
+
+        Ok(Some(GotoDefinitionResponse::Array(locations)))
     }
 
     async fn initialized(&self, _: InitializedParams) {
@@ -155,11 +181,12 @@ impl LanguageServer for Backend {
                 .get(&params.text_document_position.text_document.uri.to_string())
             {
                 Some(doc) => match doc.get_mud_location(params.text_document_position.position) {
-                    MudLocation::AclNameValue => doc
+                    MudLocation::MudAclNameReference => doc
                         .get_acl_names()
                         .iter()
                         .map(|s| CompletionItem::new_simple(s.clone(), "ACL name".to_string()))
                         .collect(),
+                    MudLocation::AclNameDefinition => vec![],
                     MudLocation::CacheValidity => vec![],
                     MudLocation::Unknown => vec![],
                 },
@@ -290,6 +317,47 @@ impl Document {
         }
     }
 
+    fn get_definition_location(&self, pos: Position) -> Vec<Range> {
+        match &self.tree {
+            None => {
+                error!("tree was None when looking for definition location");
+                vec![]
+            }
+            Some(tree) => {
+                let maybe_ref = query_for_nodes!(
+                    "(policy_acl_name name: (string ((string_quoted_content) @ref)))",
+                    tree.root_node(),
+                    self.source
+                )
+                .filter(|c| c.node.contains_lsp_pos(pos))
+                .next()
+                .map(|c| {
+                    c.node
+                        .utf8_text(self.source.as_bytes())
+                        .expect("cannot get ref node content (looking for def)")
+                });
+
+                match maybe_ref {
+                    None => vec![],
+                    Some(ref_name) => query_for_nodes!(
+                        "(acl_name_def name: (string ((string_quoted_content) @def)))",
+                        tree.root_node(),
+                        self.source
+                    )
+                    .filter(|def_capture| {
+                        def_capture
+                            .node
+                            .utf8_text(self.source.as_bytes())
+                            .expect("cannot get def node content looking for def")
+                            .eq(ref_name)
+                    })
+                    .map(|def_capture| to_lsp_range!(def_capture.node))
+                    .collect(),
+                }
+            }
+        }
+    }
+
     fn get_parser_errors(&self) -> Vec<Range> {
         match &self.tree {
             None => {
@@ -395,6 +463,12 @@ impl Document {
         }
     }
 
+    // TODO(ja_he): I want to get rid of this.
+    //              In most cases we'll care if we're in one specific type of places, and even if
+    //              not, this can still just become a macro and if you care about multiple just
+    //              call it multiple times. So far performance is easily good enough anyways, but
+    //              this single function is gonna blow up in complexity otherwise for no real
+    //              benefit (imo).
     fn get_mud_location(&self, pos: Position) -> MudLocation {
         // TODO(ja_he):
         //  definite performance concerns with this approach once we add more stuff to
@@ -410,7 +484,7 @@ impl Document {
                     )
                     .any(|c| c.node.contains_lsp_pos(pos))
                     {
-                        return MudLocation::AclNameValue;
+                        return MudLocation::MudAclNameReference;
                     }
                 }
 
@@ -433,8 +507,13 @@ impl Document {
 }
 
 enum MudLocation {
-    AclNameValue,
+    /// a reference to an ACL name in the MUD container
+    MudAclNameReference,
+    /// an ACL name in an ACL definition
+    AclNameDefinition,
+    /// the "cache-validity" definition
     CacheValidity,
+    /// any other position in the document that is none of the above
     Unknown,
 }
 
