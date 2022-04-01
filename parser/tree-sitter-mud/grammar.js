@@ -73,7 +73,11 @@ module.exports = grammar({
                                                                   ,$.direction_initiated
                                                                   ,$.json_pair_fallback)))), // TODO
 
-    icmp_matches: $ => json_pair('"icmp"', json_object(comma_separated($.json_pair_fallback))), // TODO
+    icmp_matches: $ => json_pair('"icmp"'
+                                ,json_object(comma_separated(choice($.type
+                                                                   ,$.code
+                                                                   ,$.rest_of_header
+                                                                   ,$.json_pair_fallback)))),
 
 
     controller:        $ => json_pair('"controller"',         field('uri',       $.string)),
@@ -98,6 +102,14 @@ module.exports = grammar({
     direction_initiated: $ => json_pair('"ietf-mud:direction-initiated"'
                                        ,choice('"to-device"', '"from-device"')),
 
+    type:           $ => json_pair('"type"',           $.uint8),
+    code:           $ => json_pair('"code"',           $.uint8),
+    rest_of_header: $ => json_pair('"rest-of-header"', $.binary),
+
+    // TODO: for the purposes of type-checking in muddles these aliases should
+    //       be used consistently per their use in RFC8519,RFC8520.
+    uint8:  $ => $.number,
+    binary: $ => $.string,
 
     forwarding_action: $ => json_object(json_pair('"forwarding"', $.action)),
     action: $ => choice('"accept"', '"drop"', '"reject"'),
@@ -119,7 +131,7 @@ module.exports = grammar({
                                               ,$._escape_sequence)),
     _escape_sequence: $ => token.immediate(seq('\\'
                                           ,/(\"|\\|\/|b|f|n|r|t|u)/)),
-    number: $ => /\d+/,
+    number: $ => /\d+/, // TODO: hexadecimal/other notations?
     bool: $ => choice('true', 'false'),
 
     null_valued: $ => seq('[', 'null', ']'),

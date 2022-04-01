@@ -131,6 +131,21 @@
     }
   },
   {
+    "type": "binary",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "bool",
     "named": true,
     "fields": {}
@@ -149,6 +164,21 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "code",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "uint8",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -242,7 +272,19 @@
       "required": false,
       "types": [
         {
+          "type": "code",
+          "named": true
+        },
+        {
           "type": "json_pair_fallback",
+          "named": true
+        },
+        {
+          "type": "rest_of_header",
+          "named": true
+        },
+        {
+          "type": "type",
           "named": true
         }
       ]
@@ -779,6 +821,21 @@
     }
   },
   {
+    "type": "rest_of_header",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "binary",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "same_manufacturer",
     "named": true,
     "fields": {},
@@ -911,6 +968,21 @@
     }
   },
   {
+    "type": "type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "uint8",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "udp_matches",
     "named": true,
     "fields": {},
@@ -932,6 +1004,21 @@
         },
         {
           "type": "source_port",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "uint8",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
           "named": true
         }
       ]
@@ -971,6 +1058,10 @@
   },
   {
     "type": "\"cache-validity\"",
+    "named": false
+  },
+  {
+    "type": "\"code\"",
     "named": false
   },
   {
@@ -1087,6 +1178,10 @@
   },
   {
     "type": "\"reject\"",
+    "named": false
+  },
+  {
+    "type": "\"rest-of-header\"",
     "named": false
   },
   {
