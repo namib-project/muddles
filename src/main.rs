@@ -402,33 +402,20 @@ impl Document {
                 let fallback_warnings: Vec<Diagnostic> = {
                     query_for_ranges!(FALLBACK_QUERY, tree.root_node(), self.source)
                         .map(|range| {
-                            Diagnostic::new(
-                                range,
-                                Some(DiagnosticSeverity::WARNING),
-                                None,
-                                Some("muddles".to_string()),
-                                "not part of MUD specification".to_string(),
-                                None,
-                                None,
-                            )
+                            diagnostic_warn!(range, "not part of MUD specification".to_string())
                         })
                         .collect()
                 };
                 let eth_warning: Vec<Diagnostic> = {
                     query_for_ranges!("(eth_matches) @eth", tree.root_node(), self.source)
                         .map(|range| {
-                            Diagnostic::new(
+                            diagnostic_warn!(
                                 range,
-                                Some(DiagnosticSeverity::WARNING),
-                                None,
-                                Some("muddles".to_string()),
                                 concat!(
                                     "RFC8520 omits support for 'match-on-eth'\n",
                                     "which the '.../acl:matches/' node 'eth' depends on."
                                 )
-                                .to_string(),
-                                None,
-                                None,
+                                .to_string()
                             )
                         })
                         .collect()
