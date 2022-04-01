@@ -87,6 +87,12 @@ impl LanguageServer for Backend {
             Some(TextDocumentSyncCapability::Kind(TextDocumentSyncKind::FULL));
         result.capabilities.completion_provider = Some(CompletionOptions::default());
         result.capabilities.code_action_provider = Some(CodeActionProviderCapability::Simple(true));
+        result.capabilities.execute_command_provider = Some(ExecuteCommandOptions {
+            commands: vec!["updateLastUpdateTimestamp".to_string()],
+            work_done_progress_options: WorkDoneProgressOptions {
+                work_done_progress: None,
+            },
+        });
         Ok(result)
     }
 
@@ -213,41 +219,11 @@ impl LanguageServer for Backend {
     }
 
     async fn code_action(&self, params: CodeActionParams) -> Result<Option<CodeActionResponse>> {
-        let ietf_mud_pos: Option<Position> = {
-            let docs = self.docs.read().unwrap();
-            match docs.get(&params.text_document.uri.to_string()) {
-                Some(doc) => doc.find_ietf_mud_start(),
-                None => None,
-            }
-        };
+        let mut response = vec![];
 
-        match ietf_mud_pos {
-            Some(ietf_mud_pos) => {
-                let mut edits = HashMap::new();
+        response.append(&mut self.get_version_insertion_code_action(params.text_document.uri));
 
-                edits.insert(
-                    params.text_document.uri,
-                    vec![TextEdit::new(
-                        Range::new(ietf_mud_pos, ietf_mud_pos),
-                        "    \"mud-version\" : 1,\n".to_string(),
-                    )],
-                );
-
-                let response = vec![CodeActionOrCommand::CodeAction(CodeAction {
-                    title: "Insert mud-version key with value 1 under ietf-mud:mud".to_string(),
-                    kind: None,
-                    diagnostics: None,
-                    edit: Some(WorkspaceEdit::new(edits)),
-                    command: None,
-                    is_preferred: None,
-                    disabled: None,
-                    data: None,
-                })];
-
-                Ok(Some(response))
-            }
-            None => Ok(None),
-        }
+        Ok(Some(response))
     }
 
     async fn hover(&self, params: HoverParams) -> Result<Option<Hover>> {
@@ -282,7 +258,45 @@ impl LanguageServer for Backend {
     }
 }
 
-impl Backend {}
+impl Backend {
+    fn get_version_insertion_code_action(&self, url: Url) -> CodeActionResponse {
+        let ietf_mud_pos: Option<Position> = {
+            let docs = self.docs.read().unwrap();
+            match docs.get(&url.to_string()) {
+                Some(doc) => doc.find_ietf_mud_start(),
+                None => None,
+            }
+        };
+
+        match ietf_mud_pos {
+            Some(ietf_mud_pos) => {
+                let mut edits = HashMap::new();
+
+                edits.insert(
+                    url,
+                    vec![TextEdit::new(
+                        Range::new(ietf_mud_pos, ietf_mud_pos),
+                        "    \"mud-version\" : 1,\n".to_string(),
+                    )],
+                );
+
+                let response = vec![CodeActionOrCommand::CodeAction(CodeAction {
+                    title: "Insert mud-version key with value 1 under ietf-mud:mud".to_string(),
+                    kind: None,
+                    diagnostics: None,
+                    edit: Some(WorkspaceEdit::new(edits)),
+                    command: None,
+                    is_preferred: None,
+                    disabled: None,
+                    data: None,
+                })];
+
+                response
+            }
+            None => vec![],
+        }
+    }
+}
 
 #[tokio::main]
 async fn main() {
