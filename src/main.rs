@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 use std::sync::{Arc, RwLock};
 
+use chrono::Local;
+use serde_json::json;
 use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{Client, LanguageServer, LspService, Server};
@@ -221,9 +223,61 @@ impl LanguageServer for Backend {
     async fn code_action(&self, params: CodeActionParams) -> Result<Option<CodeActionResponse>> {
         let mut response = vec![];
 
-        response.append(&mut self.get_version_insertion_code_action(params.text_document.uri));
+        response
+            .append(&mut self.get_version_insertion_code_action(params.text_document.uri.clone()));
+
+        response.push(CodeActionOrCommand::Command(Command::new(
+            "update 'last-update' timestamp".to_string(),
+            "updateLastUpdateTimestamp".to_string(),
+            Some(vec![json!(params.text_document.uri)]),
+        )));
 
         Ok(Some(response))
+    }
+
+    async fn execute_command(
+        &self,
+        params: ExecuteCommandParams,
+    ) -> Result<Option<serde_json::Value>> {
+        let command = params.command.as_str();
+        if let Ok(url) = serde_json::from_value::<Url>(params.arguments[0].clone()) {
+            match command {
+                "updateLastUpdateTimestamp" => {
+                    let edit = {
+                        let docs = self.docs.read().unwrap();
+                        let doc = docs.get(url.as_str()).unwrap_or_else(|| {
+                            panic!("no doc '{}' on goto-definition reqest!", url)
+                        });
+                        doc.get_timestamp_update_edit()
+                    };
+                    match edit {
+                        Some(edit) => {
+                            let mut changes = HashMap::new();
+                            changes.insert(url, vec![edit]);
+                            self.client.apply_edit(WorkspaceEdit::new(changes)).await?;
+                        }
+                        None => {
+                            self.client
+                                .show_message(
+                                    MessageType::ERROR,
+                                    "could not get timestamp update edit".to_string(),
+                                )
+                                .await
+                        }
+                    }
+                }
+                unknown => {
+                    self.client
+                        .show_message(
+                            MessageType::ERROR,
+                            format!("unknown command requested: '{}'", unknown),
+                        )
+                        .await
+                }
+            };
+        }
+
+        Ok(None)
     }
 
     async fn hover(&self, params: HoverParams) -> Result<Option<Hover>> {
@@ -490,19 +544,17 @@ impl Document {
     fn find_ietf_mud_start(&self) -> Option<Position> {
         match &self.tree {
             None => None,
-            Some(tree) => {
-                query_for_nodes!(r#"(ietf_mud "{" @type)"#, tree.root_node(), self.source)
-                    .map(|node| {
-                        let brace_pos = node.end_position();
-                        let next_line_start = Position {
-                            line: (brace_pos.row + 1) as u32,
-                            character: 0,
-                        };
-                        Some(next_line_start)
-                    })
-                    .next()
-                    .unwrap_or(None)
-            }
+            Some(tree) => query_for_nodes!(IETF_MUD_START_QUERY, tree.root_node(), self.source)
+                .map(|node| {
+                    let brace_pos = node.end_position();
+                    let next_line_start = Position {
+                        line: (brace_pos.row + 1) as u32,
+                        character: 0,
+                    };
+                    Some(next_line_start)
+                })
+                .next()
+                .unwrap_or(None),
         }
     }
 
@@ -544,6 +596,33 @@ impl Document {
                 }
 
                 MudLocation::Unknown
+            }
+        }
+    }
+
+    fn get_timestamp_update_edit(&self) -> Option<TextEdit> {
+        match &self.tree {
+            None => {
+                error!("tree was None when getting timestamp update edit");
+                None
+            }
+            Some(tree) => {
+                let range = query_for_ranges!(
+                    "(last_update timestamp: (string) @timestamp)",
+                    tree.root_node(),
+                    self.source
+                )
+                .next();
+                match range {
+                    Some(range) => Some(TextEdit::new(
+                        range,
+                        format!("\"{}\"", Local::now().to_rfc3339()),
+                    )),
+                    None => {
+                        error!("no range found for last-update timestamp");
+                        None
+                    }
+                }
             }
         }
     }
@@ -600,3 +679,6 @@ const FALLBACK_QUERY: &str = r#"(json_pair_fallback) @unknown
 (json_value_fallback) @unknown
 (json_array_fallback) @unknown
 (json_object_fallback) @unknown"#;
+
+// here, because it messes up my editor's brace matching
+const IETF_MUD_START_QUERY: &str = r#"(ietf_mud "{" @type)"#;
