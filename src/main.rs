@@ -57,6 +57,20 @@ macro_rules! query_for_ranges {
     };
 }
 
+macro_rules! diagnostic_warn {
+    ($range:expr,$message:expr) => {
+        Diagnostic::new(
+            $range,
+            Some(DiagnosticSeverity::WARNING),
+            None,
+            Some("muddles".to_string()),
+            $message,
+            None,
+            None,
+        )
+    };
+}
+
 struct Backend {
     client: Client,
     docs: Arc<RwLock<HashMap<String, Document>>>,
@@ -419,8 +433,38 @@ impl Document {
                         })
                         .collect()
                 };
+                let uint8_type_constraint_warnings: Vec<Diagnostic> = {
+                    query_for_nodes!("(uint8) @u", tree.root_node(), self.source)
+                        .filter_map(|node| {
+                            let value = node
+                                .utf8_text(self.source.as_bytes())
+                                .unwrap()
+                                .parse::<i64>();
+                            match value {
+                                Ok(value) => {
+                                    if (0..256).contains(&value) {
+                                        None
+                                    } else {
+                                        Some(diagnostic_warn!(
+                                            to_lsp_range!(node),
+                                            "value out-of-bounds for type `uint8`".to_string()
+                                        ))
+                                    }
+                                }
+                                Err(_) => Some(diagnostic_warn!(
+                                    to_lsp_range!(node),
+                                    "cannot parse this as a number".to_string()
+                                )),
+                            }
+                        })
+                        .collect()
+                };
 
-                fallback_warnings.into_iter().chain(eth_warning).collect()
+                fallback_warnings
+                    .into_iter()
+                    .chain(eth_warning)
+                    .chain(uint8_type_constraint_warnings)
+                    .collect()
             }
         }
     }
