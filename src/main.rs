@@ -19,6 +19,7 @@ macro_rules! query_for_nodes {
             )
             .map(|x| x.0.captures)
             .flatten()
+            .map(|c| c.node)
     };
 }
 
@@ -39,9 +40,9 @@ macro_rules! to_lsp_range {
 
 macro_rules! query_for_ranges {
     ($query:expr,$node:expr,$source:expr) => {
-        query_for_nodes!($query, $node, $source).map(|x| {
-            let start = x.node.start_position();
-            let end = x.node.end_position();
+        query_for_nodes!($query, $node, $source).map(|node| {
+            let start = node.start_position();
+            let end = node.end_position();
             Range {
                 start: Position {
                     line: start.row as u32,
@@ -329,11 +330,10 @@ impl Document {
                     tree.root_node(),
                     self.source
                 )
-                .filter(|c| c.node.contains_lsp_pos(pos))
+                .filter(|node| node.contains_lsp_pos(pos))
                 .next()
-                .map(|c| {
-                    c.node
-                        .utf8_text(self.source.as_bytes())
+                .map(|node| {
+                    node.utf8_text(self.source.as_bytes())
                         .expect("cannot get ref node content (looking for def)")
                 });
 
@@ -344,14 +344,13 @@ impl Document {
                         tree.root_node(),
                         self.source
                     )
-                    .filter(|def_capture| {
-                        def_capture
-                            .node
+                    .filter(|def_node| {
+                        def_node
                             .utf8_text(self.source.as_bytes())
                             .expect("cannot get def node content looking for def")
                             .eq(ref_name)
                     })
-                    .map(|def_capture| to_lsp_range!(def_capture.node))
+                    .map(|def_node| to_lsp_range!(def_node))
                     .collect(),
                 }
             }
@@ -434,9 +433,8 @@ impl Document {
                 tree.root_node(),
                 self.source
             )
-            .map(|x| {
-                x.node
-                    .utf8_text(self.source.as_bytes())
+            .map(|node| {
+                node.utf8_text(self.source.as_bytes())
                     .expect("cannot get node content")
                     .to_string()
             })
@@ -449,8 +447,8 @@ impl Document {
             None => None,
             Some(tree) => {
                 query_for_nodes!(r#"(ietf_mud "{" @type)"#, tree.root_node(), self.source)
-                    .map(|x| {
-                        let brace_pos = x.node.end_position();
+                    .map(|node| {
+                        let brace_pos = node.end_position();
                         let next_line_start = Position {
                             line: (brace_pos.row + 1) as u32,
                             character: 0,
@@ -482,7 +480,7 @@ impl Document {
                         tree.root_node(),
                         self.source
                     )
-                    .any(|c| c.node.contains_lsp_pos(pos))
+                    .any(|node| node.contains_lsp_pos(pos))
                     {
                         return MudLocation::MudAclNameReference;
                     }
@@ -494,7 +492,7 @@ impl Document {
                         tree.root_node(),
                         self.source
                     )
-                    .any(|c| c.node.contains_lsp_pos(pos))
+                    .any(|node| node.contains_lsp_pos(pos))
                     {
                         return MudLocation::CacheValidity;
                     }
