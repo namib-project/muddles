@@ -163,6 +163,16 @@
             "named": true
           }
         ]
+      },
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "cache_validity_id",
+            "named": true
+          }
+        ]
       }
     }
   },
@@ -251,6 +261,16 @@
     "type": "from_device_policy",
     "named": true,
     "fields": {
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "from_device_policy_id",
+            "named": true
+          }
+        ]
+      },
       "policy": {
         "multiple": false,
         "required": true,
@@ -432,6 +452,16 @@
     "type": "is_supported",
     "named": true,
     "fields": {
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "is_supported_id",
+            "named": true
+          }
+        ]
+      },
       "supported": {
         "multiple": false,
         "required": true,
@@ -528,6 +558,16 @@
     "type": "last_update",
     "named": true,
     "fields": {
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "last_update_id",
+            "named": true
+          }
+        ]
+      },
       "timestamp": {
         "multiple": false,
         "required": true,
@@ -688,6 +728,16 @@
     "type": "mud_url",
     "named": true,
     "fields": {
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "mud_url_id",
+            "named": true
+          }
+        ]
+      },
       "url": {
         "multiple": false,
         "required": true,
@@ -704,6 +754,16 @@
     "type": "mud_version",
     "named": true,
     "fields": {
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "mud_version_id",
+            "named": true
+          }
+        ]
+      },
       "version": {
         "multiple": false,
         "required": true,
@@ -921,6 +981,16 @@
             "named": true
           }
         ]
+      },
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "systeminfo_id",
+            "named": true
+          }
+        ]
       }
     }
   },
@@ -955,6 +1025,16 @@
     "type": "to_device_policy",
     "named": true,
     "fields": {
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "to_device_policy_id",
+            "named": true
+          }
+        ]
+      },
       "policy": {
         "multiple": false,
         "required": true,
@@ -1057,10 +1137,6 @@
     "named": false
   },
   {
-    "type": "\"cache-validity\"",
-    "named": false
-  },
-  {
     "type": "\"code\"",
     "named": false
   },
@@ -1086,10 +1162,6 @@
   },
   {
     "type": "\"from-device\"",
-    "named": false
-  },
-  {
-    "type": "\"from-device-policy\"",
     "named": false
   },
   {
@@ -1121,14 +1193,6 @@
     "named": false
   },
   {
-    "type": "\"is-supported\"",
-    "named": false
-  },
-  {
-    "type": "\"last-update\"",
-    "named": false
-  },
-  {
     "type": "\"local-networks\"",
     "named": false
   },
@@ -1146,14 +1210,6 @@
   },
   {
     "type": "\"model\"",
-    "named": false
-  },
-  {
-    "type": "\"mud-url\"",
-    "named": false
-  },
-  {
-    "type": "\"mud-version\"",
     "named": false
   },
   {
@@ -1193,19 +1249,11 @@
     "named": false
   },
   {
-    "type": "\"systeminfo\"",
-    "named": false
-  },
-  {
     "type": "\"tcp\"",
     "named": false
   },
   {
     "type": "\"to-device\"",
-    "named": false
-  },
-  {
-    "type": "\"to-device-policy\"",
     "named": false
   },
   {
@@ -1237,12 +1285,36 @@
     "named": false
   },
   {
+    "type": "cache_validity_id",
+    "named": true
+  },
+  {
     "type": "dst-dnsname",
     "named": false
   },
   {
     "type": "false",
     "named": false
+  },
+  {
+    "type": "from_device_policy_id",
+    "named": true
+  },
+  {
+    "type": "is_supported_id",
+    "named": true
+  },
+  {
+    "type": "last_update_id",
+    "named": true
+  },
+  {
+    "type": "mud_url_id",
+    "named": true
+  },
+  {
+    "type": "mud_version_id",
+    "named": true
   },
   {
     "type": "null",
@@ -1255,6 +1327,14 @@
   {
     "type": "src-dnsname",
     "named": false
+  },
+  {
+    "type": "systeminfo_id",
+    "named": true
+  },
+  {
+    "type": "to_device_policy_id",
+    "named": true
   },
   {
     "type": "true",

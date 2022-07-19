@@ -20,7 +20,7 @@
 #define ALIAS_COUNT 0
 #define TOKEN_COUNT 64
 #define EXTERNAL_TOKEN_COUNT 0
-#define FIELD_COUNT 10
+#define FIELD_COUNT 11
 #define MAX_ALIAS_SEQUENCE_LENGTH 13
 #define PRODUCTION_ID_COUNT 11
 
@@ -72,14 +72,14 @@ enum {
   anon_sym_DQUOTEaccept_DQUOTE = 45,
   anon_sym_DQUOTEdrop_DQUOTE = 46,
   anon_sym_DQUOTEreject_DQUOTE = 47,
-  anon_sym_DQUOTEmud_DASHversion_DQUOTE = 48,
-  anon_sym_DQUOTEmud_DASHurl_DQUOTE = 49,
-  anon_sym_DQUOTElast_DASHupdate_DQUOTE = 50,
-  anon_sym_DQUOTEcache_DASHvalidity_DQUOTE = 51,
-  anon_sym_DQUOTEis_DASHsupported_DQUOTE = 52,
-  anon_sym_DQUOTEsysteminfo_DQUOTE = 53,
-  anon_sym_DQUOTEfrom_DASHdevice_DASHpolicy_DQUOTE = 54,
-  anon_sym_DQUOTEto_DASHdevice_DASHpolicy_DQUOTE = 55,
+  sym_mud_version_id = 48,
+  sym_mud_url_id = 49,
+  sym_last_update_id = 50,
+  sym_cache_validity_id = 51,
+  sym_is_supported_id = 52,
+  sym_systeminfo_id = 53,
+  sym_from_device_policy_id = 54,
+  sym_to_device_policy_id = 55,
   anon_sym_DQUOTEaccess_DASHlists_DQUOTE = 56,
   anon_sym_DQUOTEaccess_DASHlist_DQUOTE = 57,
   aux_sym_string_quoted_content_token1 = 58,
@@ -212,14 +212,14 @@ static const char * const ts_symbol_names[] = {
   [anon_sym_DQUOTEaccept_DQUOTE] = "\"accept\"",
   [anon_sym_DQUOTEdrop_DQUOTE] = "\"drop\"",
   [anon_sym_DQUOTEreject_DQUOTE] = "\"reject\"",
-  [anon_sym_DQUOTEmud_DASHversion_DQUOTE] = "\"mud-version\"",
-  [anon_sym_DQUOTEmud_DASHurl_DQUOTE] = "\"mud-url\"",
-  [anon_sym_DQUOTElast_DASHupdate_DQUOTE] = "\"last-update\"",
-  [anon_sym_DQUOTEcache_DASHvalidity_DQUOTE] = "\"cache-validity\"",
-  [anon_sym_DQUOTEis_DASHsupported_DQUOTE] = "\"is-supported\"",
-  [anon_sym_DQUOTEsysteminfo_DQUOTE] = "\"systeminfo\"",
-  [anon_sym_DQUOTEfrom_DASHdevice_DASHpolicy_DQUOTE] = "\"from-device-policy\"",
-  [anon_sym_DQUOTEto_DASHdevice_DASHpolicy_DQUOTE] = "\"to-device-policy\"",
+  [sym_mud_version_id] = "mud_version_id",
+  [sym_mud_url_id] = "mud_url_id",
+  [sym_last_update_id] = "last_update_id",
+  [sym_cache_validity_id] = "cache_validity_id",
+  [sym_is_supported_id] = "is_supported_id",
+  [sym_systeminfo_id] = "systeminfo_id",
+  [sym_from_device_policy_id] = "from_device_policy_id",
+  [sym_to_device_policy_id] = "to_device_policy_id",
   [anon_sym_DQUOTEaccess_DASHlists_DQUOTE] = "\"access-lists\"",
   [anon_sym_DQUOTEaccess_DASHlist_DQUOTE] = "\"access-list\"",
   [aux_sym_string_quoted_content_token1] = "string_quoted_content_token1",
@@ -352,14 +352,14 @@ static const TSSymbol ts_symbol_map[] = {
   [anon_sym_DQUOTEaccept_DQUOTE] = anon_sym_DQUOTEaccept_DQUOTE,
   [anon_sym_DQUOTEdrop_DQUOTE] = anon_sym_DQUOTEdrop_DQUOTE,
   [anon_sym_DQUOTEreject_DQUOTE] = anon_sym_DQUOTEreject_DQUOTE,
-  [anon_sym_DQUOTEmud_DASHversion_DQUOTE] = anon_sym_DQUOTEmud_DASHversion_DQUOTE,
-  [anon_sym_DQUOTEmud_DASHurl_DQUOTE] = anon_sym_DQUOTEmud_DASHurl_DQUOTE,
-  [anon_sym_DQUOTElast_DASHupdate_DQUOTE] = anon_sym_DQUOTElast_DASHupdate_DQUOTE,
-  [anon_sym_DQUOTEcache_DASHvalidity_DQUOTE] = anon_sym_DQUOTEcache_DASHvalidity_DQUOTE,
-  [anon_sym_DQUOTEis_DASHsupported_DQUOTE] = anon_sym_DQUOTEis_DASHsupported_DQUOTE,
-  [anon_sym_DQUOTEsysteminfo_DQUOTE] = anon_sym_DQUOTEsysteminfo_DQUOTE,
-  [anon_sym_DQUOTEfrom_DASHdevice_DASHpolicy_DQUOTE] = anon_sym_DQUOTEfrom_DASHdevice_DASHpolicy_DQUOTE,
-  [anon_sym_DQUOTEto_DASHdevice_DASHpolicy_DQUOTE] = anon_sym_DQUOTEto_DASHdevice_DASHpolicy_DQUOTE,
+  [sym_mud_version_id] = sym_mud_version_id,
+  [sym_mud_url_id] = sym_mud_url_id,
+  [sym_last_update_id] = sym_last_update_id,
+  [sym_cache_validity_id] = sym_cache_validity_id,
+  [sym_is_supported_id] = sym_is_supported_id,
+  [sym_systeminfo_id] = sym_systeminfo_id,
+  [sym_from_device_policy_id] = sym_from_device_policy_id,
+  [sym_to_device_policy_id] = sym_to_device_policy_id,
   [anon_sym_DQUOTEaccess_DASHlists_DQUOTE] = anon_sym_DQUOTEaccess_DASHlists_DQUOTE,
   [anon_sym_DQUOTEaccess_DASHlist_DQUOTE] = anon_sym_DQUOTEaccess_DASHlist_DQUOTE,
   [aux_sym_string_quoted_content_token1] = aux_sym_string_quoted_content_token1,
@@ -636,37 +636,37 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = true,
     .named = false,
   },
-  [anon_sym_DQUOTEmud_DASHversion_DQUOTE] = {
+  [sym_mud_version_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
-  [anon_sym_DQUOTEmud_DASHurl_DQUOTE] = {
+  [sym_mud_url_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
-  [anon_sym_DQUOTElast_DASHupdate_DQUOTE] = {
+  [sym_last_update_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
-  [anon_sym_DQUOTEcache_DASHvalidity_DQUOTE] = {
+  [sym_cache_validity_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
-  [anon_sym_DQUOTEis_DASHsupported_DQUOTE] = {
+  [sym_is_supported_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
-  [anon_sym_DQUOTEsysteminfo_DQUOTE] = {
+  [sym_systeminfo_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
-  [anon_sym_DQUOTEfrom_DASHdevice_DASHpolicy_DQUOTE] = {
+  [sym_from_device_policy_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
-  [anon_sym_DQUOTEto_DASHdevice_DASHpolicy_DQUOTE] = {
+  [sym_to_device_policy_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
   [anon_sym_DQUOTEaccess_DASHlists_DQUOTE] = {
     .visible = true,
@@ -998,13 +998,14 @@ enum {
   field_authority = 1,
   field_hours = 2,
   field_info = 3,
-  field_name = 4,
-  field_policy = 5,
-  field_supported = 6,
-  field_timestamp = 7,
-  field_uri = 8,
-  field_url = 9,
-  field_version = 10,
+  field_mud_id = 4,
+  field_name = 5,
+  field_policy = 6,
+  field_supported = 7,
+  field_timestamp = 8,
+  field_uri = 9,
+  field_url = 10,
+  field_version = 11,
 };
 
 static const char * const ts_field_names[] = {
@@ -1012,6 +1013,7 @@ static const char * const ts_field_names[] = {
   [field_authority] = "authority",
   [field_hours] = "hours",
   [field_info] = "info",
+  [field_mud_id] = "mud_id",
   [field_name] = "name",
   [field_policy] = "policy",
   [field_supported] = "supported",
@@ -1022,38 +1024,45 @@ static const char * const ts_field_names[] = {
 };
 
 static const TSFieldMapSlice ts_field_map_slices[PRODUCTION_ID_COUNT] = {
-  [1] = {.index = 0, .length = 1},
-  [2] = {.index = 1, .length = 1},
-  [3] = {.index = 2, .length = 1},
-  [4] = {.index = 3, .length = 1},
-  [5] = {.index = 4, .length = 1},
-  [6] = {.index = 5, .length = 1},
-  [7] = {.index = 6, .length = 1},
-  [8] = {.index = 7, .length = 1},
-  [9] = {.index = 8, .length = 1},
-  [10] = {.index = 9, .length = 1},
+  [1] = {.index = 0, .length = 2},
+  [2] = {.index = 2, .length = 2},
+  [3] = {.index = 4, .length = 2},
+  [4] = {.index = 6, .length = 2},
+  [5] = {.index = 8, .length = 2},
+  [6] = {.index = 10, .length = 2},
+  [7] = {.index = 12, .length = 2},
+  [8] = {.index = 14, .length = 1},
+  [9] = {.index = 15, .length = 1},
+  [10] = {.index = 16, .length = 1},
 };
 
 static const TSFieldMapEntry ts_field_map_entries[] = {
   [0] =
+    {field_mud_id, 0},
     {field_version, 2},
-  [1] =
-    {field_url, 2},
   [2] =
-    {field_timestamp, 2},
-  [3] =
-    {field_hours, 2},
+    {field_mud_id, 0},
+    {field_url, 2},
   [4] =
-    {field_supported, 2},
-  [5] =
-    {field_info, 2},
+    {field_mud_id, 0},
+    {field_timestamp, 2},
   [6] =
-    {field_policy, 2},
-  [7] =
-    {field_name, 2},
+    {field_hours, 2},
+    {field_mud_id, 0},
   [8] =
+    {field_mud_id, 0},
+    {field_supported, 2},
+  [10] =
+    {field_info, 2},
+    {field_mud_id, 0},
+  [12] =
+    {field_mud_id, 0},
+    {field_policy, 2},
+  [14] =
+    {field_name, 2},
+  [15] =
     {field_uri, 2},
-  [9] =
+  [16] =
     {field_authority, 2},
 };
 
@@ -2893,28 +2902,28 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       ACCEPT_TOKEN(anon_sym_DQUOTEreject_DQUOTE);
       END_STATE();
     case 543:
-      ACCEPT_TOKEN(anon_sym_DQUOTEmud_DASHversion_DQUOTE);
+      ACCEPT_TOKEN(sym_mud_version_id);
       END_STATE();
     case 544:
-      ACCEPT_TOKEN(anon_sym_DQUOTEmud_DASHurl_DQUOTE);
+      ACCEPT_TOKEN(sym_mud_url_id);
       END_STATE();
     case 545:
-      ACCEPT_TOKEN(anon_sym_DQUOTElast_DASHupdate_DQUOTE);
+      ACCEPT_TOKEN(sym_last_update_id);
       END_STATE();
     case 546:
-      ACCEPT_TOKEN(anon_sym_DQUOTEcache_DASHvalidity_DQUOTE);
+      ACCEPT_TOKEN(sym_cache_validity_id);
       END_STATE();
     case 547:
-      ACCEPT_TOKEN(anon_sym_DQUOTEis_DASHsupported_DQUOTE);
+      ACCEPT_TOKEN(sym_is_supported_id);
       END_STATE();
     case 548:
-      ACCEPT_TOKEN(anon_sym_DQUOTEsysteminfo_DQUOTE);
+      ACCEPT_TOKEN(sym_systeminfo_id);
       END_STATE();
     case 549:
-      ACCEPT_TOKEN(anon_sym_DQUOTEfrom_DASHdevice_DASHpolicy_DQUOTE);
+      ACCEPT_TOKEN(sym_from_device_policy_id);
       END_STATE();
     case 550:
-      ACCEPT_TOKEN(anon_sym_DQUOTEto_DASHdevice_DASHpolicy_DQUOTE);
+      ACCEPT_TOKEN(sym_to_device_policy_id);
       END_STATE();
     case 551:
       ACCEPT_TOKEN(anon_sym_DQUOTEaccess_DASHlists_DQUOTE);
@@ -3322,14 +3331,14 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [anon_sym_DQUOTEcode_DQUOTE] = ACTIONS(1),
     [anon_sym_DQUOTErest_DASHof_DASHheader_DQUOTE] = ACTIONS(1),
     [anon_sym_DQUOTEforwarding_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTEmud_DASHversion_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTEmud_DASHurl_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTElast_DASHupdate_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTEcache_DASHvalidity_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTEis_DASHsupported_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTEsysteminfo_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTEfrom_DASHdevice_DASHpolicy_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTEto_DASHdevice_DASHpolicy_DQUOTE] = ACTIONS(1),
+    [sym_mud_version_id] = ACTIONS(1),
+    [sym_mud_url_id] = ACTIONS(1),
+    [sym_last_update_id] = ACTIONS(1),
+    [sym_cache_validity_id] = ACTIONS(1),
+    [sym_is_supported_id] = ACTIONS(1),
+    [sym_systeminfo_id] = ACTIONS(1),
+    [sym_from_device_policy_id] = ACTIONS(1),
+    [sym_to_device_policy_id] = ACTIONS(1),
     [sym__escape_sequence] = ACTIONS(1),
     [sym_number] = ACTIONS(1),
     [anon_sym_true] = ACTIONS(1),
@@ -3349,21 +3358,21 @@ static const uint16_t ts_small_parse_table[] = {
     ACTIONS(7), 1,
       anon_sym_DQUOTE,
     ACTIONS(9), 1,
-      anon_sym_DQUOTEmud_DASHversion_DQUOTE,
+      sym_mud_version_id,
     ACTIONS(11), 1,
-      anon_sym_DQUOTEmud_DASHurl_DQUOTE,
+      sym_mud_url_id,
     ACTIONS(13), 1,
-      anon_sym_DQUOTElast_DASHupdate_DQUOTE,
+      sym_last_update_id,
     ACTIONS(15), 1,
-      anon_sym_DQUOTEcache_DASHvalidity_DQUOTE,
+      sym_cache_validity_id,
     ACTIONS(17), 1,
-      anon_sym_DQUOTEis_DASHsupported_DQUOTE,
+      sym_is_supported_id,
     ACTIONS(19), 1,
-      anon_sym_DQUOTEsysteminfo_DQUOTE,
+      sym_systeminfo_id,
     ACTIONS(21), 1,
-      anon_sym_DQUOTEfrom_DASHdevice_DASHpolicy_DQUOTE,
+      sym_from_device_policy_id,
     ACTIONS(23), 1,
-      anon_sym_DQUOTEto_DASHdevice_DASHpolicy_DQUOTE,
+      sym_to_device_policy_id,
     ACTIONS(25), 1,
       sym_number,
     STATE(308), 1,
@@ -3382,21 +3391,21 @@ static const uint16_t ts_small_parse_table[] = {
     ACTIONS(7), 1,
       anon_sym_DQUOTE,
     ACTIONS(9), 1,
-      anon_sym_DQUOTEmud_DASHversion_DQUOTE,
+      sym_mud_version_id,
     ACTIONS(11), 1,
-      anon_sym_DQUOTEmud_DASHurl_DQUOTE,
+      sym_mud_url_id,
     ACTIONS(13), 1,
-      anon_sym_DQUOTElast_DASHupdate_DQUOTE,
+      sym_last_update_id,
     ACTIONS(15), 1,
-      anon_sym_DQUOTEcache_DASHvalidity_DQUOTE,
+      sym_cache_validity_id,
     ACTIONS(17), 1,
-      anon_sym_DQUOTEis_DASHsupported_DQUOTE,
+      sym_is_supported_id,
     ACTIONS(19), 1,
-      anon_sym_DQUOTEsysteminfo_DQUOTE,
+      sym_systeminfo_id,
     ACTIONS(21), 1,
-      anon_sym_DQUOTEfrom_DASHdevice_DASHpolicy_DQUOTE,
+      sym_from_device_policy_id,
     ACTIONS(23), 1,
-      anon_sym_DQUOTEto_DASHdevice_DASHpolicy_DQUOTE,
+      sym_to_device_policy_id,
     ACTIONS(25), 1,
       sym_number,
     STATE(308), 1,

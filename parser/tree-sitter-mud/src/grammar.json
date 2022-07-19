@@ -1889,8 +1889,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"mud-version\""
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "mud_version_id"
+          }
         },
         {
           "type": "STRING",
@@ -1910,8 +1914,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"mud-url\""
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "mud_url_id"
+          }
         },
         {
           "type": "STRING",
@@ -1931,8 +1939,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"last-update\""
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "last_update_id"
+          }
         },
         {
           "type": "STRING",
@@ -1952,8 +1964,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"cache-validity\""
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "cache_validity_id"
+          }
         },
         {
           "type": "STRING",
@@ -1973,8 +1989,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"is-supported\""
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "is_supported_id"
+          }
         },
         {
           "type": "STRING",
@@ -1994,8 +2014,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"systeminfo\""
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "systeminfo_id"
+          }
         },
         {
           "type": "STRING",
@@ -2015,8 +2039,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"from-device-policy\""
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "from_device_policy_id"
+          }
         },
         {
           "type": "STRING",
@@ -2036,8 +2064,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"to-device-policy\""
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "to_device_policy_id"
+          }
         },
         {
           "type": "STRING",
@@ -2052,6 +2084,38 @@
           }
         }
       ]
+    },
+    "mud_version_id": {
+      "type": "STRING",
+      "value": "\"mud-version\""
+    },
+    "mud_url_id": {
+      "type": "STRING",
+      "value": "\"mud-url\""
+    },
+    "last_update_id": {
+      "type": "STRING",
+      "value": "\"last-update\""
+    },
+    "cache_validity_id": {
+      "type": "STRING",
+      "value": "\"cache-validity\""
+    },
+    "is_supported_id": {
+      "type": "STRING",
+      "value": "\"is-supported\""
+    },
+    "systeminfo_id": {
+      "type": "STRING",
+      "value": "\"systeminfo\""
+    },
+    "from_device_policy_id": {
+      "type": "STRING",
+      "value": "\"from-device-policy\""
+    },
+    "to_device_policy_id": {
+      "type": "STRING",
+      "value": "\"to-device-policy\""
     },
     "policy": {
       "type": "SEQ",
