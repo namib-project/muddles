@@ -1097,7 +1097,7 @@
     "named": false
   },
   {
-    "type": "\"ietf-access-control-list:access-lists\"",
+    "type": "\"ietf-access-control-list:acls\"",
     "named": false
   },
   {

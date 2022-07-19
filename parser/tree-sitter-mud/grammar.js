@@ -16,7 +16,7 @@ module.exports = grammar({
                                                                ,$.to_device_policy
                                                                ,$.json_pair_fallback)))),
 
-    ietf_acls : $ => json_pair('"ietf-access-control-list:access-lists"'
+    ietf_acls : $ => json_pair('"ietf-access-control-list:acls"'
                               ,$.acl),
     acl: $ => json_object(json_pair('"acl"', json_list($.acl_object))),
     acl_object: $ => json_object(seq($.acl_name_def,','

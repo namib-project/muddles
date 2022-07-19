@@ -178,7 +178,7 @@
       "members": [
         {
           "type": "STRING",
-          "value": "\"ietf-access-control-list:access-lists\""
+          "value": "\"ietf-access-control-list:acls\""
         },
         {
           "type": "STRING",
