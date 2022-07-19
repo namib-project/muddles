@@ -11,6 +11,8 @@ use tree_sitter::{Node, Parser, Query, QueryCursor, Tree};
 
 use log::{debug, error};
 
+mod mud_doc;
+
 macro_rules! query_for_nodes {
     ($query:expr,$node:expr,$source:expr) => {
         QueryCursor::new()
@@ -294,7 +296,7 @@ impl LanguageServer for Backend {
             ) {
                 Some(doc) => {
                     match doc.get_mud_location(params.text_document_position_params.position) {
-                        MudLocation::CacheValidity => CACHE_VALIDITY_DOCSTRING.to_string(),
+                        MudLocation::CacheValidity => mud_doc::CACHE_VALIDITY_DOCSTRING.to_string(),
                         _ => "no info available".to_string(),
                     }
                 }
@@ -660,20 +662,6 @@ impl ContainsPos for Node<'_> {
         pos >= start && pos <= end
     }
 }
-
-const CACHE_VALIDITY_DOCSTRING: &str = r#"
-3.5.  cache-validity
-
-   This uint8 is the period of time in hours that a network management
-   station MUST wait since its last retrieval before checking for an
-   update.  It is RECOMMENDED that this value be no less than 24, and it
-   MUST NOT be more than 168 for any Thing that is supported.  This
-   period SHOULD be no shorter than any period determined through HTTP
-   caching directives (e.g., "cache-control" or "Expires").  N.B., the
-   expiring of this timer does not require the MUD manager to discard
-   the MUD file, nor terminate access to a Thing.  See Section 16 for
-   more information.
-"#;
 
 const FALLBACK_QUERY: &str = r#"(json_pair_fallback) @unknown
 (json_value_fallback) @unknown
