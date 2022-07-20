@@ -369,10 +369,7 @@ async fn main() {
         client,
         docs: Arc::new(RwLock::new(HashMap::new())),
     });
-    Server::new(stdin, stdout)
-        .interleave(messages)
-        .serve(service)
-        .await;
+    Server::new(stdin, stdout, messages).serve(service).await;
 }
 
 struct Document {
