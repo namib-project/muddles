@@ -294,12 +294,33 @@ impl LanguageServer for Backend {
                     .uri
                     .to_string(),
             ) {
-                Some(doc) => {
-                    match doc.get_mud_location(params.text_document_position_params.position) {
-                        MudLocation::CacheValidity => mud_doc::CACHE_VALIDITY_DOCSTRING.to_string(),
-                        _ => "no info available".to_string(),
+                Some(doc) => match &doc.tree {
+                    Some(tree) => {
+                        let maybe_mud_id = query_for_nodes!(
+                            "(ietf_mud (_ mud_id: (_) @mud_id))",
+                            tree.root_node(),
+                            doc.source
+                        )
+                        .filter(|node| {
+                            node.contains_lsp_pos(params.text_document_position_params.position)
+                        })
+                        .next();
+                        match maybe_mud_id {
+                            Some(mud_id) => {
+                                if let Ok(cursor_node_text) = mud_id.utf8_text(doc.source.as_bytes())
+                                {
+                                    mud_doc::get_doc_for_mud_id(cursor_node_text)
+                                        .unwrap_or("[failed to get docs]")
+                                        .to_string()
+                                } else {
+                                    "[failed to get node text]".to_string()
+                                }
+                            }
+                            None => "no info available".to_string(),
+                        }
                     }
-                }
+                    None => "no info available".to_string(),
+                },
                 None => "no info available".to_string(),
             }
         };
@@ -411,7 +432,7 @@ impl Document {
                     tree.root_node(),
                     self.source
                 )
-                .filter(|node| node.contains_lsp_pos(pos))
+                .filter(|node| node.contains_lsp_pos_with_followchar(pos))
                 .next()
                 .map(|node| {
                     node.utf8_text(self.source.as_bytes())
@@ -576,7 +597,7 @@ impl Document {
                         tree.root_node(),
                         self.source
                     )
-                    .any(|node| node.contains_lsp_pos(pos))
+                    .any(|node| node.contains_lsp_pos_with_followchar(pos))
                     {
                         return MudLocation::MudAclNameReference;
                     }
@@ -588,7 +609,7 @@ impl Document {
                         tree.root_node(),
                         self.source
                     )
-                    .any(|node| node.contains_lsp_pos(pos))
+                    .any(|node| node.contains_lsp_pos_with_followchar(pos))
                     {
                         return MudLocation::CacheValidity;
                     }
@@ -640,10 +661,27 @@ enum MudLocation {
 
 trait ContainsPos {
     fn contains_lsp_pos(&self, pos: Position) -> bool;
+    fn contains_lsp_pos_with_followchar(&self, pos: Position) -> bool;
 }
 
 impl ContainsPos for Node<'_> {
     fn contains_lsp_pos(&self, pos: Position) -> bool {
+        let start = self.start_position();
+        let end = self.end_position();
+
+        let start: Position = Position {
+            line: start.row as u32,
+            character: start.column as u32,
+        };
+        let end: Position = Position {
+            line: end.row as u32,
+            character: end.column as u32,
+        };
+
+        pos >= start && pos < end
+    }
+
+    fn contains_lsp_pos_with_followchar(&self, pos: Position) -> bool {
         let start = self.start_position();
         let end = self.end_position();
 

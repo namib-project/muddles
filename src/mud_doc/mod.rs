@@ -11,3 +11,10 @@
    the MUD file, nor terminate access to a Thing.  See Section 16 for
    more information.
 "#;
+
+pub fn get_doc_for_mud_id(mud_id: &str) -> Option<&str> {
+    match mud_id {
+        "\"cache-validity\"" => Some(CACHE_VALIDITY_DOCSTRING),
+        _ => None,
+    }
+}
