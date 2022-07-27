@@ -327,7 +327,7 @@ impl LanguageServer for Backend {
 
         Ok(Some(Hover {
             contents: HoverContents::Markup(MarkupContent {
-                kind: MarkupKind::PlainText,
+                kind: MarkupKind::Markdown,
                 value: response,
             }),
             range: None,
