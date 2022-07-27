@@ -9,9 +9,16 @@ module.exports = grammar({
                             ,json_object(comma_separated(choice($.mud_version
                                                                ,$.mud_url
                                                                ,$.last_update
+                                                               ,$.mud_signature
                                                                ,$.cache_validity
                                                                ,$.is_supported
                                                                ,$.systeminfo
+                                                               ,$.mfg_name
+                                                               ,$.model_name
+                                                               ,$.firmware_rev
+                                                               ,$.software_rev
+                                                               ,$.documentation
+                                                               ,$.extensions
                                                                ,$.from_device_policy
                                                                ,$.to_device_policy
                                                                ,$.json_pair_fallback)))),
@@ -114,14 +121,21 @@ module.exports = grammar({
     forwarding_action: $ => json_object(json_pair('"forwarding"', $.action)),
     action: $ => choice('"accept"', '"drop"', '"reject"'),
 
-    mud_version:          $ => json_pair(field('mud_id', $.mud_version_id)       ,field('version'  ,$.number)),
-    mud_url:              $ => json_pair(field('mud_id', $.mud_url_id)           ,field('url'      ,$.string)),
-    last_update:          $ => json_pair(field('mud_id', $.last_update_id)       ,field('timestamp',$.string)),
-    cache_validity:       $ => json_pair(field('mud_id', $.cache_validity_id)    ,field('hours'    ,$.number)),
-    is_supported:         $ => json_pair(field('mud_id', $.is_supported_id)      ,field('supported',$.bool  )),
-    systeminfo:           $ => json_pair(field('mud_id', $.systeminfo_id)        ,field('info'     ,$.string)),
-    from_device_policy:   $ => json_pair(field('mud_id', $.from_device_policy_id),field('policy'   ,$.policy)),
-    to_device_policy:     $ => json_pair(field('mud_id', $.to_device_policy_id)  ,field('policy'   ,$.policy)),
+    mud_version:          $ => json_pair(field('mud_id', $.mud_version_id)       ,field('version'   ,$.number)),
+    mud_url:              $ => json_pair(field('mud_id', $.mud_url_id)           ,field('url'       ,$.string)),
+    last_update:          $ => json_pair(field('mud_id', $.last_update_id)       ,field('timestamp' ,$.string)),
+    cache_validity:       $ => json_pair(field('mud_id', $.cache_validity_id)    ,field('hours'     ,$.number)),
+    is_supported:         $ => json_pair(field('mud_id', $.is_supported_id)      ,field('supported' ,$.bool  )),
+    systeminfo:           $ => json_pair(field('mud_id', $.systeminfo_id)        ,field('info'      ,$.string)),
+    from_device_policy:   $ => json_pair(field('mud_id', $.from_device_policy_id),field('policy'    ,$.policy)),
+    to_device_policy:     $ => json_pair(field('mud_id', $.to_device_policy_id)  ,field('policy'    ,$.policy)),
+    mud_signature:        $ => json_pair(field('mud_id', $.mud_signature_id)     ,field('uri'       ,$.string)),
+    mfg_name:             $ => json_pair(field('mud_id', $.mfg_name_id)          ,field('name'      ,$.string)),
+    model_name:           $ => json_pair(field('mud_id', $.model_name_id)        ,field('name'      ,$.string)),
+    firmware_rev:         $ => json_pair(field('mud_id', $.firmware_rev_id)      ,field('rev'       ,$.string)),
+    software_rev:         $ => json_pair(field('mud_id', $.software_rev_id)      ,field('rev'       ,$.string)),
+    documentation:        $ => json_pair(field('mud_id', $.documentation_id)     ,field('uri'       ,$.string)),
+    extensions:           $ => json_pair(field('mud_id', $.extensions_id)        ,field('extensions',$.string)),
 
     mud_version_id:        $ => '"mud-version"',
     mud_url_id:            $ => '"mud-url"',
@@ -131,6 +145,13 @@ module.exports = grammar({
     systeminfo_id:         $ => '"systeminfo"',
     from_device_policy_id: $ => '"from-device-policy"',
     to_device_policy_id:   $ => '"to-device-policy"',
+    mud_signature_id:      $ => '"mud-signature"',
+    mfg_name_id:           $ => '"mfg-name"',
+    model_name_id:         $ => '"model-name"',
+    firmware_rev_id:       $ => '"firmware-rev"',
+    software_rev_id:       $ => '"software-rev"',
+    documentation_id:      $ => '"documentation"',
+    extensions_id:         $ => '"extensions"',
 
     policy: $ => json_object(json_pair('"access-lists"', $.access_list)),
     access_list: $ => json_object(json_pair('"access-list"', json_list(json_object($.policy_acl_name)))),

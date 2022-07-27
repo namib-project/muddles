@@ -114,6 +114,10 @@
                         },
                         {
                           "type": "SYMBOL",
+                          "name": "mud_signature"
+                        },
+                        {
+                          "type": "SYMBOL",
                           "name": "cache_validity"
                         },
                         {
@@ -123,6 +127,30 @@
                         {
                           "type": "SYMBOL",
                           "name": "systeminfo"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "mfg_name"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "model_name"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "firmware_rev"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "software_rev"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "documentation"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "extensions"
                         },
                         {
                           "type": "SYMBOL",
@@ -164,6 +192,10 @@
                               },
                               {
                                 "type": "SYMBOL",
+                                "name": "mud_signature"
+                              },
+                              {
+                                "type": "SYMBOL",
                                 "name": "cache_validity"
                               },
                               {
@@ -173,6 +205,30 @@
                               {
                                 "type": "SYMBOL",
                                 "name": "systeminfo"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "mfg_name"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "model_name"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "firmware_rev"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "software_rev"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "documentation"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "extensions"
                               },
                               {
                                 "type": "SYMBOL",
@@ -2085,6 +2141,181 @@
         }
       ]
     },
+    "mud_signature": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "mud_signature_id"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "FIELD",
+          "name": "uri",
+          "content": {
+            "type": "SYMBOL",
+            "name": "string"
+          }
+        }
+      ]
+    },
+    "mfg_name": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "mfg_name_id"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "string"
+          }
+        }
+      ]
+    },
+    "model_name": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "model_name_id"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "string"
+          }
+        }
+      ]
+    },
+    "firmware_rev": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "firmware_rev_id"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "FIELD",
+          "name": "rev",
+          "content": {
+            "type": "SYMBOL",
+            "name": "string"
+          }
+        }
+      ]
+    },
+    "software_rev": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "software_rev_id"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "FIELD",
+          "name": "rev",
+          "content": {
+            "type": "SYMBOL",
+            "name": "string"
+          }
+        }
+      ]
+    },
+    "documentation": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "documentation_id"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "FIELD",
+          "name": "uri",
+          "content": {
+            "type": "SYMBOL",
+            "name": "string"
+          }
+        }
+      ]
+    },
+    "extensions": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "mud_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "extensions_id"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "FIELD",
+          "name": "extensions",
+          "content": {
+            "type": "SYMBOL",
+            "name": "string"
+          }
+        }
+      ]
+    },
     "mud_version_id": {
       "type": "STRING",
       "value": "\"mud-version\""
@@ -2116,6 +2347,34 @@
     "to_device_policy_id": {
       "type": "STRING",
       "value": "\"to-device-policy\""
+    },
+    "mud_signature_id": {
+      "type": "STRING",
+      "value": "\"mud-signature\""
+    },
+    "mfg_name_id": {
+      "type": "STRING",
+      "value": "\"mfg-name\""
+    },
+    "model_name_id": {
+      "type": "STRING",
+      "value": "\"model-name\""
+    },
+    "firmware_rev_id": {
+      "type": "STRING",
+      "value": "\"firmware-rev\""
+    },
+    "software_rev_id": {
+      "type": "STRING",
+      "value": "\"software-rev\""
+    },
+    "documentation_id": {
+      "type": "STRING",
+      "value": "\"documentation\""
+    },
+    "extensions_id": {
+      "type": "STRING",
+      "value": "\"extensions\""
     },
     "policy": {
       "type": "SEQ",

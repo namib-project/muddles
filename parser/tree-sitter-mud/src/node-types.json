@@ -228,6 +228,32 @@
     "fields": {}
   },
   {
+    "type": "documentation",
+    "named": true,
+    "fields": {
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "documentation_id",
+            "named": true
+          }
+        ]
+      },
+      "uri": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "eth_matches",
     "named": true,
     "fields": {},
@@ -240,6 +266,58 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "extensions",
+    "named": true,
+    "fields": {
+      "extensions": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      },
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "extensions_id",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "firmware_rev",
+    "named": true,
+    "fields": {
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "firmware_rev_id",
+            "named": true
+          }
+        ]
+      },
+      "rev": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -353,6 +431,18 @@
           "named": true
         },
         {
+          "type": "documentation",
+          "named": true
+        },
+        {
+          "type": "extensions",
+          "named": true
+        },
+        {
+          "type": "firmware_rev",
+          "named": true
+        },
+        {
           "type": "from_device_policy",
           "named": true
         },
@@ -369,11 +459,27 @@
           "named": true
         },
         {
+          "type": "mfg_name",
+          "named": true
+        },
+        {
+          "type": "model_name",
+          "named": true
+        },
+        {
+          "type": "mud_signature",
+          "named": true
+        },
+        {
           "type": "mud_url",
           "named": true
         },
         {
           "type": "mud_version",
+          "named": true
+        },
+        {
+          "type": "software_rev",
           "named": true
         },
         {
@@ -670,10 +776,62 @@
     }
   },
   {
+    "type": "mfg_name",
+    "named": true,
+    "fields": {
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "mfg_name_id",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "model",
     "named": true,
     "fields": {
       "uri": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "model_name",
+    "named": true,
+    "fields": {
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "model_name_id",
+            "named": true
+          }
+        ]
+      },
+      "name": {
         "multiple": false,
         "required": true,
         "types": [
@@ -722,6 +880,32 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "mud_signature",
+    "named": true,
+    "fields": {
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "mud_signature_id",
+            "named": true
+          }
+        ]
+      },
+      "uri": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -908,6 +1092,32 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "software_rev",
+    "named": true,
+    "fields": {
+      "mud_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "software_rev_id",
+            "named": true
+          }
+        ]
+      },
+      "rev": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1289,12 +1499,24 @@
     "named": true
   },
   {
+    "type": "documentation_id",
+    "named": true
+  },
+  {
     "type": "dst-dnsname",
     "named": false
   },
   {
+    "type": "extensions_id",
+    "named": true
+  },
+  {
     "type": "false",
     "named": false
+  },
+  {
+    "type": "firmware_rev_id",
+    "named": true
   },
   {
     "type": "from_device_policy_id",
@@ -1306,6 +1528,18 @@
   },
   {
     "type": "last_update_id",
+    "named": true
+  },
+  {
+    "type": "mfg_name_id",
+    "named": true
+  },
+  {
+    "type": "model_name_id",
+    "named": true
+  },
+  {
+    "type": "mud_signature_id",
     "named": true
   },
   {
@@ -1322,6 +1556,10 @@
   },
   {
     "type": "number",
+    "named": true
+  },
+  {
+    "type": "software_rev_id",
     "named": true
   },
   {
