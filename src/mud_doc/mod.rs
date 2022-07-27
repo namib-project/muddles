@@ -1,23 +1,31 @@
-pub fn get_doc_for_mud_id(mud_id: &str) -> Option<&str> {
+pub fn get_doc_for_mud_id(mud_id: &str) -> Option<String> {
     match mud_id {
-        "\"mud-version\"" => Some(MUD_VERSION_DOCSTRING),
-        "\"mud-url\"" => Some(MUD_URL_DOCSTRING),
-        "\"last-update\"" => Some(LAST_UPDATE_DOCSTRING),
-        "\"mud-signature\"" => Some(MUD_SIGNATURE_DOCSTRING),
-        "\"cache-validity\"" => Some(CACHE_VALIDITY_DOCSTRING),
-        "\"is-supported\"" => Some(IS_SUPPORTED_DOCSTRING),
-        "\"systeminfo\"" => Some(SYSTEMINFO_DOCSTRING),
-        "\"mfg-name\"" | "\"model-name\"" | "\"firmware-rev\"" | "\"software-rev\"" => {
-            Some(REV_NAME_DOCSTRING)
+        "\"mud-version\"" => Some(MUD_VERSION_DOCSTRING.to_string()),
+        "\"mud-url\"" => Some(MUD_URL_DOCSTRING.to_string()),
+        "\"last-update\"" => Some(LAST_UPDATE_DOCSTRING.to_string()),
+        "\"mud-signature\"" => Some(MUD_SIGNATURE_DOCSTRING.to_string()),
+        "\"cache-validity\"" => Some(CACHE_VALIDITY_DOCSTRING.to_string()),
+        "\"is-supported\"" => Some(IS_SUPPORTED_DOCSTRING.to_string()),
+        "\"systeminfo\"" => Some(SYSTEMINFO_DOCSTRING.to_string()),
+        "\"mfg-name\"" => Some(REV_NAME_DOCSTRING.to_string() + SEP + MFG_NAME_DOC_YANG),
+        "\"model-name\"" => Some(REV_NAME_DOCSTRING.to_string() + SEP + MODEL_NAME_DOC_YANG),
+        "\"firmware-rev\"" => Some(REV_NAME_DOCSTRING.to_string() + SEP + FIRMWARE_REV_DOC_YANG),
+        "\"software-rev\"" => Some(REV_NAME_DOCSTRING.to_string() + SEP + SOFTWARE_REV_DOC_YANG),
+        "\"documentation\"" => Some(DOCUMENTATION_DOCSTRING.to_string()),
+        "\"extensions\"" => Some(EXTENSIONS_DOCSTRING.to_string()),
+        "\"to-device-policy\"" => {
+            Some(DEVICE_POLICY_DOCSTRING.to_string() + SEP + TO_DEVICE_POLICY_YANG)
         }
-        "\"documentation\"" => Some(DOCUMENTATION_DOCSTRING),
-        "\"extensions\"" => Some(EXTENSIONS_DOCSTRING),
-        "\"to-device-policy\"" | "\"from-device-policy\"" => Some(DEVICE_POLICY_DOCSTRING),
+        "\"from-device-policy\"" => {
+            Some(DEVICE_POLICY_DOCSTRING.to_string() + SEP + FROM_DEVICE_POLICY_YANG)
+        }
         _ => None,
     }
 }
 
-pub const CACHE_VALIDITY_DOCSTRING: &str = r#"
+const SEP: &str = "\n---\n";
+
+const CACHE_VALIDITY_DOCSTRING: &str = r#"
 # 3.5.  cache-validity
 
 This uint8 is the period of time in hours that a network management station MUST wait since its last retrieval before checking for an update.
@@ -27,21 +35,21 @@ N.B., the expiring of this timer does not require the MUD manager to discard the
 See Section 16 for more information.
 "#;
 
-pub const MUD_VERSION_DOCSTRING: &str = r#"
+const MUD_VERSION_DOCSTRING: &str = r#"
 # 3.1.  mud-version
 
 This node specifies the integer version of the MUD specification.
 This memo specifies version 1.
 "#;
 
-pub const MUD_URL_DOCSTRING: &str = r#"
+const MUD_URL_DOCSTRING: &str = r#"
 # 3.2.  MUD URL
 
 This URL identifies the MUD file.
 This is useful when the file and associated signature are manually uploaded, say, in an offline mode.
 "#;
 
-pub const DEVICE_POLICY_DOCSTRING: &str = r#"
+const DEVICE_POLICY_DOCSTRING: &str = r#"
 # 3.3.  to-device-policy and from-device-policy Containers
 
 [RFC8519] describes access lists.
@@ -50,7 +58,7 @@ Hence, each of these containers indicates the appropriate direction of a flow in
 They contain references to specific access lists.
 "#;
 
-pub const LAST_UPDATE_DOCSTRING: &str = r#"
+const LAST_UPDATE_DOCSTRING: &str = r#"
 # 3.4.  last-update
 
 This is a date-and-time value of when the MUD file was generated.
@@ -58,7 +66,7 @@ This is akin to a version number.
 Its form is taken from [RFC6991].
 "#;
 
-pub const IS_SUPPORTED_DOCSTRING: &str = r#"
+const IS_SUPPORTED_DOCSTRING: &str = r#"
 # 3.6.  is-supported
 
 This boolean is an indication from the manufacturer to the network administrator as to whether or not the Thing is supported
@@ -66,7 +74,7 @@ In this context, a Thing is said to not be supported if the manufacturer intends
 A MUD manager MAY still periodically check for updates.
 "#;
 
-pub const SYSTEMINFO_DOCSTRING: &str = r#"
+const SYSTEMINFO_DOCSTRING: &str = r#"
 # 3.7.  systeminfo
 
 This is a textual UTF-8 description of the Thing to be connected.
@@ -74,7 +82,7 @@ The intent is for administrators to be able to see a brief displayable descripti
 It SHOULD NOT exceed 60 characters worth of display space.
 "#;
 
-pub const REV_NAME_DOCSTRING: &str = r#"
+const REV_NAME_DOCSTRING: &str = r#"
 # 3.8.  mfg-name, software-rev, model-name, and firmware-rev
 
 These optional fields are filled in as specified by [RFC8348].
@@ -82,7 +90,7 @@ Note that firmware-rev and software-rev MUST NOT be populated in a MUD file if t
 This would be the case, for instance, with MUD URLs that are contained in 802.1AR certificates.
 "#;
 
-pub const EXTENSIONS_DOCSTRING: &str = r#"
+const EXTENSIONS_DOCSTRING: &str = r#"
 # 3.9.  extensions
 
 This optional leaf-list names MUD extensions that are used in the MUD file.
@@ -93,7 +101,7 @@ Note that extensions can either extend the MUD file as described in the previous
 An extension example can be found in Appendix B.
 "#;
 
-pub const MUD_SIGNATURE_DOCSTRING: &str = r#"
+const MUD_SIGNATURE_DOCSTRING: &str = r#"
     leaf mud-signature {
       type inet:uri;
       description
@@ -102,7 +110,7 @@ pub const MUD_SIGNATURE_DOCSTRING: &str = r#"
     }
 "#;
 
-pub const DOCUMENTATION_DOCSTRING: &str = r#"
+const DOCUMENTATION_DOCSTRING: &str = r#"
 # 4.3.  documentation
 
 This URI consists of a URL that points to documentation relating to the device and the MUD file.
@@ -117,5 +125,71 @@ This can prove particularly useful when the "controller" class is used, so that 
          not resolve this URL on their own but rather simply
          provide it to the administrator.  Parsing HTML is
          not an intended function of a MUD manager.";
+    }
+"#;
+
+const MFG_NAME_DOC_YANG: &str = r#"
+    leaf mfg-name {
+      type string;
+      description
+        "Manufacturer name, as described in
+         the ietf-hardware YANG module.";
+    }
+"#;
+
+const MODEL_NAME_DOC_YANG: &str = r#"
+    leaf model-name {
+      type string;
+      description
+        "Model name, as described in the
+         ietf-hardware YANG module.";
+    }
+"#;
+
+const FIRMWARE_REV_DOC_YANG: &str = r#"
+    leaf firmware-rev {
+      type string;
+      description
+        "firmware-rev, as described in the
+         ietf-hardware YANG module.  Note that this field
+         MUST NOT be included when the device can be
+         updated but the MUD URL cannot.";
+    }
+"#;
+
+const SOFTWARE_REV_DOC_YANG: &str = r#"
+    leaf software-rev {
+      type string;
+      description
+        "software-rev, as described in the
+         ietf-hardware YANG module.  Note that this field
+         MUST NOT be included when the device can be
+         updated but the MUD URL cannot.";
+    }
+"#;
+
+const TO_DEVICE_POLICY_YANG: &str = r#"
+    container to-device-policy {
+      description
+        "The policies that should be enforced on traffic
+         going to the device.  These policies are not
+         necessarily intended to be enforced at a single
+         point but may be rendered by the controller to any
+         relevant enforcement points in the network or
+         elsewhere.";
+      uses access-lists;
+    }
+"#;
+
+const FROM_DEVICE_POLICY_YANG: &str = r#"
+    container from-device-policy {
+      description
+        "The policies that should be enforced on traffic
+         coming from the device.  These policies are not
+         necessarily intended to be enforced at a single
+         point but may be rendered by the controller to any
+         relevant enforcement points in the network or
+         elsewhere.";
+      uses access-lists;
     }
 "#;

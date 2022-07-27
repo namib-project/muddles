@@ -307,11 +307,11 @@ impl LanguageServer for Backend {
                         .next();
                         match maybe_mud_id {
                             Some(mud_id) => {
-                                if let Ok(cursor_node_text) = mud_id.utf8_text(doc.source.as_bytes())
+                                if let Ok(cursor_node_text) =
+                                    mud_id.utf8_text(doc.source.as_bytes())
                                 {
                                     mud_doc::get_doc_for_mud_id(cursor_node_text)
-                                        .unwrap_or("[failed to get docs]")
-                                        .to_string()
+                                        .unwrap_or("[failed to get docs]".to_string())
                                 } else {
                                     "[failed to get node text]".to_string()
                                 }
