@@ -77,8 +77,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"ietf-mud:mud\""
+          "type": "FIELD",
+          "name": "ietf_mud_toplevel_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "ietf_mud_mud"
+          }
         },
         {
           "type": "STRING",
@@ -266,8 +270,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"ietf-access-control-list:acls\""
+          "type": "FIELD",
+          "name": "ietf_mud_toplevel_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "ietf_access_control_list_acls"
+          }
         },
         {
           "type": "STRING",
@@ -278,6 +286,14 @@
           "name": "acl"
         }
       ]
+    },
+    "ietf_mud_mud": {
+      "type": "STRING",
+      "value": "\"ietf-mud:mud\""
+    },
+    "ietf_access_control_list_acls": {
+      "type": "STRING",
+      "value": "\"ietf-access-control-list:acls\""
     },
     "acl": {
       "type": "SEQ",

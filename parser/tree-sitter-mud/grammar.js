@@ -5,7 +5,7 @@ module.exports = grammar({
 
     source: $ => json_object(comma_separated(choice($.ietf_mud, $.ietf_acls, $.json_pair_fallback))),
 
-    ietf_mud: $ => json_pair('"ietf-mud:mud"'
+    ietf_mud: $ => json_pair(field('ietf_mud_toplevel_id', $.ietf_mud_mud)
                             ,json_object(comma_separated(choice($.mud_version
                                                                ,$.mud_url
                                                                ,$.last_update
@@ -22,9 +22,12 @@ module.exports = grammar({
                                                                ,$.from_device_policy
                                                                ,$.to_device_policy
                                                                ,$.json_pair_fallback)))),
-
-    ietf_acls : $ => json_pair('"ietf-access-control-list:acls"'
+    ietf_acls : $ => json_pair(field('ietf_mud_toplevel_id', $.ietf_access_control_list_acls)
                               ,$.acl),
+
+    ietf_mud_mud: $ => '"ietf-mud:mud"',
+    ietf_access_control_list_acls: $ => '"ietf-access-control-list:acls"',
+
     acl: $ => json_object(json_pair('"acl"', json_list($.acl_object))),
     acl_object: $ => json_object(seq($.acl_name_def,','
                                     ,json_pair('"type"', $.string),','

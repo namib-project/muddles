@@ -406,7 +406,18 @@
   {
     "type": "ietf_acls",
     "named": true,
-    "fields": {},
+    "fields": {
+      "ietf_mud_toplevel_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ietf_access_control_list_acls",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": false,
       "required": true,
@@ -421,7 +432,18 @@
   {
     "type": "ietf_mud",
     "named": true,
-    "fields": {},
+    "fields": {
+      "ietf_mud_toplevel_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ietf_mud_mud",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": false,
@@ -492,6 +514,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "ietf_mud_mud",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "ip_header_proto",
@@ -1379,10 +1406,6 @@
     "named": false
   },
   {
-    "type": "\"ietf-access-control-list:acls\"",
-    "named": false
-  },
-  {
     "type": "\"ietf-acldns:",
     "named": false
   },
@@ -1520,6 +1543,10 @@
   },
   {
     "type": "from_device_policy_id",
+    "named": true
+  },
+  {
+    "type": "ietf_access_control_list_acls",
     "named": true
   },
   {
