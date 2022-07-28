@@ -297,7 +297,7 @@ impl LanguageServer for Backend {
                 Some(doc) => match &doc.tree {
                     Some(tree) => {
                         let maybe_mud_id = query_for_nodes!(
-                            "(ietf_mud (_ mud_id: (_) @mud_id))",
+                            "(_ mud_id: (_) @mud_id) (_ ietf_mud_toplevel_id: (_) @mud_id)",
                             tree.root_node(),
                             doc.source
                         )
@@ -305,6 +305,7 @@ impl LanguageServer for Backend {
                             node.contains_lsp_pos(params.text_document_position_params.position)
                         })
                         .next();
+
                         match maybe_mud_id {
                             Some(mud_id) => {
                                 if let Ok(cursor_node_text) =

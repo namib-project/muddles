@@ -19,6 +19,12 @@ pub fn get_doc_for_mud_id(mud_id: &str) -> Option<String> {
         "\"from-device-policy\"" => {
             Some(DEVICE_POLICY_DOCSTRING.to_string() + SEP + FROM_DEVICE_POLICY_YANG)
         }
+        "\"ietf-access-control-list:acls\"" => Some(
+            IETF_ACL_EXPLAINER.to_string() + SEP + ROOT_CONTAINER_SENTENCE + SEP + IETF_ACLS_YANG,
+        ),
+        "\"ietf-mud:mud\"" => Some(
+            IETF_MUD_EXPLAINER.to_string() + SEP + ROOT_CONTAINER_SENTENCE + SEP + IETF_MUD_YANG,
+        ),
         _ => None,
     }
 }
@@ -191,5 +197,43 @@ const FROM_DEVICE_POLICY_YANG: &str = r#"
          relevant enforcement points in the network or
          elsewhere.";
       uses access-lists;
+    }
+"#;
+
+const ROOT_CONTAINER_SENTENCE: &str = r#"
+A valid MUD file will contain two root objects: a "mud" container and an "acls" container.
+Extensions may add additional root objects as required. [RFC8520]
+"#;
+
+const IETF_ACLS_YANG: &str = r#"
+    container acls {
+      description
+        "This is a top-level container for Access Control Lists.
+         It can have one or more acl nodes.";
+    ...
+"#;
+
+const IETF_ACL_EXPLAINER: &str = r#"
+`ietf-access-control-list:acls` lists _access control lists_ (ACLs).
+"#;
+
+const IETF_MUD_EXPLAINER: &str = r#"
+# 2.1.  The IETF-MUD YANG Module
+
+[...]
+
+- [...]
+  The "mud" container, holds information that is relevant to retrieval and validity of the MUD file itself, as well as policy intended to and from the Thing.
+
+[...]
+"#;
+
+const IETF_MUD_YANG: &str = r#"
+    container mud {
+      presence "Enabled for this particular MUD URL";
+      description
+        "MUD-related information, as specified
+         by RFC 8520.";
+      uses mud-grouping;
     }
 "#;
