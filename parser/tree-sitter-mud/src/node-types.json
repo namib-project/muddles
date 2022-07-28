@@ -195,6 +195,16 @@
     "type": "controller",
     "named": true,
     "fields": {
+      "mud_matches_augment_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "controller_id",
+            "named": true
+          }
+        ]
+      },
       "uri": {
         "multiple": false,
         "required": true,
@@ -716,7 +726,18 @@
   {
     "type": "local_networks",
     "named": true,
-    "fields": {},
+    "fields": {
+      "mud_matches_augment_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "local_networks_id",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": false,
       "required": true,
@@ -738,6 +759,16 @@
         "types": [
           {
             "type": "string",
+            "named": true
+          }
+        ]
+      },
+      "mud_matches_augment_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "manufacturer_id",
             "named": true
           }
         ]
@@ -832,6 +863,16 @@
     "type": "model",
     "named": true,
     "fields": {
+      "mud_matches_augment_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "model_id",
+            "named": true
+          }
+        ]
+      },
       "uri": {
         "multiple": false,
         "required": true,
@@ -990,7 +1031,18 @@
   {
     "type": "my_controller",
     "named": true,
-    "fields": {},
+    "fields": {
+      "mud_matches_augment_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "my_controller_id",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": false,
       "required": true,
@@ -1109,7 +1161,18 @@
   {
     "type": "same_manufacturer",
     "named": true,
-    "fields": {},
+    "fields": {
+      "mud_matches_augment_id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "same_manufacturer_id",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": false,
       "required": true,
@@ -1378,10 +1441,6 @@
     "named": false
   },
   {
-    "type": "\"controller\"",
-    "named": false
-  },
-  {
     "type": "\"destination-port\"",
     "named": false
   },
@@ -1426,27 +1485,11 @@
     "named": false
   },
   {
-    "type": "\"local-networks\"",
-    "named": false
-  },
-  {
     "type": "\"lower-port\"",
     "named": false
   },
   {
-    "type": "\"manufacturer\"",
-    "named": false
-  },
-  {
     "type": "\"matches\"",
-    "named": false
-  },
-  {
-    "type": "\"model\"",
-    "named": false
-  },
-  {
-    "type": "\"my-controller\"",
     "named": false
   },
   {
@@ -1471,10 +1514,6 @@
   },
   {
     "type": "\"rest-of-header\"",
-    "named": false
-  },
-  {
-    "type": "\"same-manufacturer\"",
     "named": false
   },
   {
@@ -1522,6 +1561,10 @@
     "named": true
   },
   {
+    "type": "controller_id",
+    "named": true
+  },
+  {
     "type": "documentation_id",
     "named": true
   },
@@ -1558,7 +1601,19 @@
     "named": true
   },
   {
+    "type": "local_networks_id",
+    "named": true
+  },
+  {
+    "type": "manufacturer_id",
+    "named": true
+  },
+  {
     "type": "mfg_name_id",
+    "named": true
+  },
+  {
+    "type": "model_id",
     "named": true
   },
   {
@@ -1578,11 +1633,19 @@
     "named": true
   },
   {
+    "type": "my_controller_id",
+    "named": true
+  },
+  {
     "type": "null",
     "named": false
   },
   {
     "type": "number",
+    "named": true
+  },
+  {
+    "type": "same_manufacturer_id",
     "named": true
   },
   {

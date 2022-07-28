@@ -1396,8 +1396,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"controller\""
+          "type": "FIELD",
+          "name": "mud_matches_augment_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "controller_id"
+          }
         },
         {
           "type": "STRING",
@@ -1417,8 +1421,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"my-controller\""
+          "type": "FIELD",
+          "name": "mud_matches_augment_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "my_controller_id"
+          }
         },
         {
           "type": "STRING",
@@ -1434,8 +1442,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"manufacturer\""
+          "type": "FIELD",
+          "name": "mud_matches_augment_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "manufacturer_id"
+          }
         },
         {
           "type": "STRING",
@@ -1455,8 +1467,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"same-manufacturer\""
+          "type": "FIELD",
+          "name": "mud_matches_augment_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "same_manufacturer_id"
+          }
         },
         {
           "type": "STRING",
@@ -1472,8 +1488,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"local-networks\""
+          "type": "FIELD",
+          "name": "mud_matches_augment_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "local_networks_id"
+          }
         },
         {
           "type": "STRING",
@@ -1489,8 +1509,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "\"model\""
+          "type": "FIELD",
+          "name": "mud_matches_augment_id",
+          "content": {
+            "type": "SYMBOL",
+            "name": "model_id"
+          }
         },
         {
           "type": "STRING",
@@ -1505,6 +1529,30 @@
           }
         }
       ]
+    },
+    "controller_id": {
+      "type": "STRING",
+      "value": "\"controller\""
+    },
+    "my_controller_id": {
+      "type": "STRING",
+      "value": "\"my-controller\""
+    },
+    "manufacturer_id": {
+      "type": "STRING",
+      "value": "\"manufacturer\""
+    },
+    "same_manufacturer_id": {
+      "type": "STRING",
+      "value": "\"same-manufacturer\""
+    },
+    "local_networks_id": {
+      "type": "STRING",
+      "value": "\"local-networks\""
+    },
+    "model_id": {
+      "type": "STRING",
+      "value": "\"model\""
     },
     "ip_header_proto": {
       "type": "SEQ",

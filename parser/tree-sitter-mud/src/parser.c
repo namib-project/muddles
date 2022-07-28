@@ -20,9 +20,9 @@
 #define ALIAS_COUNT 0
 #define TOKEN_COUNT 71
 #define EXTERNAL_TOKEN_COUNT 0
-#define FIELD_COUNT 14
+#define FIELD_COUNT 15
 #define MAX_ALIAS_SEQUENCE_LENGTH 13
-#define PRODUCTION_ID_COUNT 16
+#define PRODUCTION_ID_COUNT 17
 
 enum {
   anon_sym_LBRACE = 1,
@@ -46,12 +46,12 @@ enum {
   anon_sym_DQUOTEtcp_DQUOTE = 19,
   anon_sym_DQUOTEudp_DQUOTE = 20,
   anon_sym_DQUOTEicmp_DQUOTE = 21,
-  anon_sym_DQUOTEcontroller_DQUOTE = 22,
-  anon_sym_DQUOTEmy_DASHcontroller_DQUOTE = 23,
-  anon_sym_DQUOTEmanufacturer_DQUOTE = 24,
-  anon_sym_DQUOTEsame_DASHmanufacturer_DQUOTE = 25,
-  anon_sym_DQUOTElocal_DASHnetworks_DQUOTE = 26,
-  anon_sym_DQUOTEmodel_DQUOTE = 27,
+  sym_controller_id = 22,
+  sym_my_controller_id = 23,
+  sym_manufacturer_id = 24,
+  sym_same_manufacturer_id = 25,
+  sym_local_networks_id = 26,
+  sym_model_id = 27,
   anon_sym_DQUOTEprotocol_DQUOTE = 28,
   anon_sym_DQUOTEietf_DASHacldns_COLON = 29,
   anon_sym_src_DASHdnsname = 30,
@@ -201,12 +201,12 @@ static const char * const ts_symbol_names[] = {
   [anon_sym_DQUOTEtcp_DQUOTE] = "\"tcp\"",
   [anon_sym_DQUOTEudp_DQUOTE] = "\"udp\"",
   [anon_sym_DQUOTEicmp_DQUOTE] = "\"icmp\"",
-  [anon_sym_DQUOTEcontroller_DQUOTE] = "\"controller\"",
-  [anon_sym_DQUOTEmy_DASHcontroller_DQUOTE] = "\"my-controller\"",
-  [anon_sym_DQUOTEmanufacturer_DQUOTE] = "\"manufacturer\"",
-  [anon_sym_DQUOTEsame_DASHmanufacturer_DQUOTE] = "\"same-manufacturer\"",
-  [anon_sym_DQUOTElocal_DASHnetworks_DQUOTE] = "\"local-networks\"",
-  [anon_sym_DQUOTEmodel_DQUOTE] = "\"model\"",
+  [sym_controller_id] = "controller_id",
+  [sym_my_controller_id] = "my_controller_id",
+  [sym_manufacturer_id] = "manufacturer_id",
+  [sym_same_manufacturer_id] = "same_manufacturer_id",
+  [sym_local_networks_id] = "local_networks_id",
+  [sym_model_id] = "model_id",
   [anon_sym_DQUOTEprotocol_DQUOTE] = "\"protocol\"",
   [anon_sym_DQUOTEietf_DASHacldns_COLON] = "\"ietf-acldns:",
   [anon_sym_src_DASHdnsname] = "src-dnsname",
@@ -356,12 +356,12 @@ static const TSSymbol ts_symbol_map[] = {
   [anon_sym_DQUOTEtcp_DQUOTE] = anon_sym_DQUOTEtcp_DQUOTE,
   [anon_sym_DQUOTEudp_DQUOTE] = anon_sym_DQUOTEudp_DQUOTE,
   [anon_sym_DQUOTEicmp_DQUOTE] = anon_sym_DQUOTEicmp_DQUOTE,
-  [anon_sym_DQUOTEcontroller_DQUOTE] = anon_sym_DQUOTEcontroller_DQUOTE,
-  [anon_sym_DQUOTEmy_DASHcontroller_DQUOTE] = anon_sym_DQUOTEmy_DASHcontroller_DQUOTE,
-  [anon_sym_DQUOTEmanufacturer_DQUOTE] = anon_sym_DQUOTEmanufacturer_DQUOTE,
-  [anon_sym_DQUOTEsame_DASHmanufacturer_DQUOTE] = anon_sym_DQUOTEsame_DASHmanufacturer_DQUOTE,
-  [anon_sym_DQUOTElocal_DASHnetworks_DQUOTE] = anon_sym_DQUOTElocal_DASHnetworks_DQUOTE,
-  [anon_sym_DQUOTEmodel_DQUOTE] = anon_sym_DQUOTEmodel_DQUOTE,
+  [sym_controller_id] = sym_controller_id,
+  [sym_my_controller_id] = sym_my_controller_id,
+  [sym_manufacturer_id] = sym_manufacturer_id,
+  [sym_same_manufacturer_id] = sym_same_manufacturer_id,
+  [sym_local_networks_id] = sym_local_networks_id,
+  [sym_model_id] = sym_model_id,
   [anon_sym_DQUOTEprotocol_DQUOTE] = anon_sym_DQUOTEprotocol_DQUOTE,
   [anon_sym_DQUOTEietf_DASHacldns_COLON] = anon_sym_DQUOTEietf_DASHacldns_COLON,
   [anon_sym_src_DASHdnsname] = anon_sym_src_DASHdnsname,
@@ -577,29 +577,29 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = true,
     .named = false,
   },
-  [anon_sym_DQUOTEcontroller_DQUOTE] = {
+  [sym_controller_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
-  [anon_sym_DQUOTEmy_DASHcontroller_DQUOTE] = {
+  [sym_my_controller_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
-  [anon_sym_DQUOTEmanufacturer_DQUOTE] = {
+  [sym_manufacturer_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
-  [anon_sym_DQUOTEsame_DASHmanufacturer_DQUOTE] = {
+  [sym_same_manufacturer_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
-  [anon_sym_DQUOTElocal_DASHnetworks_DQUOTE] = {
+  [sym_local_networks_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
-  [anon_sym_DQUOTEmodel_DQUOTE] = {
+  [sym_model_id] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
   [anon_sym_DQUOTEprotocol_DQUOTE] = {
     .visible = true,
@@ -1106,14 +1106,15 @@ enum {
   field_ietf_mud_toplevel_id = 4,
   field_info = 5,
   field_mud_id = 6,
-  field_name = 7,
-  field_policy = 8,
-  field_rev = 9,
-  field_supported = 10,
-  field_timestamp = 11,
-  field_uri = 12,
-  field_url = 13,
-  field_version = 14,
+  field_mud_matches_augment_id = 7,
+  field_name = 8,
+  field_policy = 9,
+  field_rev = 10,
+  field_supported = 11,
+  field_timestamp = 12,
+  field_uri = 13,
+  field_url = 14,
+  field_version = 15,
 };
 
 static const char * const ts_field_names[] = {
@@ -1124,6 +1125,7 @@ static const char * const ts_field_names[] = {
   [field_ietf_mud_toplevel_id] = "ietf_mud_toplevel_id",
   [field_info] = "info",
   [field_mud_id] = "mud_id",
+  [field_mud_matches_augment_id] = "mud_matches_augment_id",
   [field_name] = "name",
   [field_policy] = "policy",
   [field_rev] = "rev",
@@ -1148,8 +1150,9 @@ static const TSFieldMapSlice ts_field_map_slices[PRODUCTION_ID_COUNT] = {
   [11] = {.index = 19, .length = 2},
   [12] = {.index = 21, .length = 2},
   [13] = {.index = 23, .length = 1},
-  [14] = {.index = 24, .length = 1},
-  [15] = {.index = 25, .length = 1},
+  [14] = {.index = 24, .length = 2},
+  [15] = {.index = 26, .length = 1},
+  [16] = {.index = 27, .length = 2},
 };
 
 static const TSFieldMapEntry ts_field_map_entries[] = {
@@ -1191,9 +1194,13 @@ static const TSFieldMapEntry ts_field_map_entries[] = {
   [23] =
     {field_name, 2},
   [24] =
+    {field_mud_matches_augment_id, 0},
     {field_uri, 2},
-  [25] =
+  [26] =
+    {field_mud_matches_augment_id, 0},
+  [27] =
     {field_authority, 2},
+    {field_mud_matches_augment_id, 0},
 };
 
 static const TSSymbol ts_alias_sequences[PRODUCTION_ID_COUNT][MAX_ALIAS_SEQUENCE_LENGTH] = {
@@ -3132,22 +3139,22 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       ACCEPT_TOKEN(anon_sym_DQUOTEicmp_DQUOTE);
       END_STATE();
     case 585:
-      ACCEPT_TOKEN(anon_sym_DQUOTEcontroller_DQUOTE);
+      ACCEPT_TOKEN(sym_controller_id);
       END_STATE();
     case 586:
-      ACCEPT_TOKEN(anon_sym_DQUOTEmy_DASHcontroller_DQUOTE);
+      ACCEPT_TOKEN(sym_my_controller_id);
       END_STATE();
     case 587:
-      ACCEPT_TOKEN(anon_sym_DQUOTEmanufacturer_DQUOTE);
+      ACCEPT_TOKEN(sym_manufacturer_id);
       END_STATE();
     case 588:
-      ACCEPT_TOKEN(anon_sym_DQUOTEsame_DASHmanufacturer_DQUOTE);
+      ACCEPT_TOKEN(sym_same_manufacturer_id);
       END_STATE();
     case 589:
-      ACCEPT_TOKEN(anon_sym_DQUOTElocal_DASHnetworks_DQUOTE);
+      ACCEPT_TOKEN(sym_local_networks_id);
       END_STATE();
     case 590:
-      ACCEPT_TOKEN(anon_sym_DQUOTEmodel_DQUOTE);
+      ACCEPT_TOKEN(sym_model_id);
       END_STATE();
     case 591:
       ACCEPT_TOKEN(anon_sym_DQUOTEprotocol_DQUOTE);
@@ -3731,12 +3738,12 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [anon_sym_DQUOTEtcp_DQUOTE] = ACTIONS(1),
     [anon_sym_DQUOTEudp_DQUOTE] = ACTIONS(1),
     [anon_sym_DQUOTEicmp_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTEcontroller_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTEmy_DASHcontroller_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTEmanufacturer_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTEsame_DASHmanufacturer_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTElocal_DASHnetworks_DQUOTE] = ACTIONS(1),
-    [anon_sym_DQUOTEmodel_DQUOTE] = ACTIONS(1),
+    [sym_controller_id] = ACTIONS(1),
+    [sym_my_controller_id] = ACTIONS(1),
+    [sym_manufacturer_id] = ACTIONS(1),
+    [sym_same_manufacturer_id] = ACTIONS(1),
+    [sym_local_networks_id] = ACTIONS(1),
+    [sym_model_id] = ACTIONS(1),
     [anon_sym_DQUOTEprotocol_DQUOTE] = ACTIONS(1),
     [anon_sym_DQUOTEietf_DASHacldns_COLON] = ACTIONS(1),
     [anon_sym_src_DASHdnsname] = ACTIONS(1),
@@ -3956,17 +3963,17 @@ static const uint16_t ts_small_parse_table[] = {
     ACTIONS(57), 1,
       anon_sym_RBRACE,
     ACTIONS(59), 1,
-      anon_sym_DQUOTEcontroller_DQUOTE,
+      sym_controller_id,
     ACTIONS(61), 1,
-      anon_sym_DQUOTEmy_DASHcontroller_DQUOTE,
+      sym_my_controller_id,
     ACTIONS(63), 1,
-      anon_sym_DQUOTEmanufacturer_DQUOTE,
+      sym_manufacturer_id,
     ACTIONS(65), 1,
-      anon_sym_DQUOTEsame_DASHmanufacturer_DQUOTE,
+      sym_same_manufacturer_id,
     ACTIONS(67), 1,
-      anon_sym_DQUOTElocal_DASHnetworks_DQUOTE,
+      sym_local_networks_id,
     ACTIONS(69), 1,
-      anon_sym_DQUOTEmodel_DQUOTE,
+      sym_model_id,
     STATE(330), 1,
       sym_string,
     STATE(60), 7,
@@ -3983,17 +3990,17 @@ static const uint16_t ts_small_parse_table[] = {
     ACTIONS(39), 1,
       sym_number,
     ACTIONS(59), 1,
-      anon_sym_DQUOTEcontroller_DQUOTE,
+      sym_controller_id,
     ACTIONS(61), 1,
-      anon_sym_DQUOTEmy_DASHcontroller_DQUOTE,
+      sym_my_controller_id,
     ACTIONS(63), 1,
-      anon_sym_DQUOTEmanufacturer_DQUOTE,
+      sym_manufacturer_id,
     ACTIONS(65), 1,
-      anon_sym_DQUOTEsame_DASHmanufacturer_DQUOTE,
+      sym_same_manufacturer_id,
     ACTIONS(67), 1,
-      anon_sym_DQUOTElocal_DASHnetworks_DQUOTE,
+      sym_local_networks_id,
     ACTIONS(69), 1,
-      anon_sym_DQUOTEmodel_DQUOTE,
+      sym_model_id,
     STATE(330), 1,
       sym_string,
     STATE(170), 7,
@@ -6249,10 +6256,10 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [454] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_mud_matches_augment, 6),
   [456] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_mud_version, 3, .production_id = 2),
   [458] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_model, 3, .production_id = 14),
-  [460] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_local_networks, 3),
-  [462] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_same_manufacturer, 3),
-  [464] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_manufacturer, 3, .production_id = 15),
-  [466] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_my_controller, 3),
+  [460] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_local_networks, 3, .production_id = 15),
+  [462] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_same_manufacturer, 3, .production_id = 15),
+  [464] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_manufacturer, 3, .production_id = 16),
+  [466] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_my_controller, 3, .production_id = 15),
   [468] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_ietf_mud, 5, .production_id = 1),
   [470] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_controller, 3, .production_id = 14),
   [472] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_ace_object, 13),

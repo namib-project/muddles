@@ -90,12 +90,19 @@ module.exports = grammar({
                                                                    ,$.json_pair_fallback)))),
 
 
-    controller:        $ => json_pair('"controller"',         field('uri',       $.string)),
-    my_controller:     $ => json_pair('"my-controller"',                         $.null_valued),
-    manufacturer:      $ => json_pair('"manufacturer"',       field('authority', $.string)),
-    same_manufacturer: $ => json_pair('"same-manufacturer"',                     $.null_valued),
-    local_networks:    $ => json_pair('"local-networks"',                        $.null_valued),
-    model:             $ => json_pair('"model"',              field('uri',       $.string)),
+    controller:        $ => json_pair(field('mud_matches_augment_id', $.controller_id),         field('uri',       $.string)),
+    my_controller:     $ => json_pair(field('mud_matches_augment_id', $.my_controller_id),                         $.null_valued),
+    manufacturer:      $ => json_pair(field('mud_matches_augment_id', $.manufacturer_id),       field('authority', $.string)),
+    same_manufacturer: $ => json_pair(field('mud_matches_augment_id', $.same_manufacturer_id),                     $.null_valued),
+    local_networks:    $ => json_pair(field('mud_matches_augment_id', $.local_networks_id),                        $.null_valued),
+    model:             $ => json_pair(field('mud_matches_augment_id', $.model_id),              field('uri',       $.string)),
+
+    controller_id:        $ => '"controller"',
+    my_controller_id:     $ => '"my-controller"',
+    manufacturer_id:      $ => '"manufacturer"',
+    same_manufacturer_id: $ => '"same-manufacturer"',
+    local_networks_id:    $ => '"local-networks"',
+    model_id:             $ => '"model"',
 
     ip_header_proto: $ => json_pair('"protocol"', $.number),
     ietf_acldns: $ => json_pair(seq('"ietf-acldns:',choice('src-dnsname','dst-dnsname'),'"')
