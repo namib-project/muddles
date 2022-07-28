@@ -297,7 +297,7 @@ impl LanguageServer for Backend {
                 Some(doc) => match &doc.tree {
                     Some(tree) => {
                         let maybe_mud_id = query_for_nodes!(
-                            "(_ mud_id: (_) @mud_id) (_ ietf_mud_toplevel_id: (_) @mud_id)",
+                            "(_ mud_id: (_) @mud_id) (_ ietf_mud_toplevel_id: (_) @mud_id) (_ mud_matches_augment_id: (_) @mud_id)",
                             tree.root_node(),
                             doc.source
                         )

@@ -25,6 +25,16 @@ pub fn get_doc_for_mud_id(mud_id: &str) -> Option<String> {
         "\"ietf-mud:mud\"" => Some(
             IETF_MUD_EXPLAINER.to_string() + SEP + ROOT_CONTAINER_SENTENCE + SEP + IETF_MUD_YANG,
         ),
+        "\"controller\"" => Some(CONTROLLER_DOCSTRING.to_string() + SEP + CONTROLLER_YANG),
+        "\"my-controller\"" => Some(MY_CONTROLLER_DOCSTRING.to_string() + SEP + MY_CONTROLLER_YANG),
+        "\"model\"" => Some(MODEL_DOCSTRING.to_string() + SEP + MODEL_YANG),
+        "\"manufacturer\"" => Some(MANUFACTURER_DOCSTRING.to_string() + SEP + MANUFACTURER_YANG),
+        "\"same-manufacturer\"" => {
+            Some(SAME_MANUFACTURER_DOCSTRING.to_string() + SEP + SAME_MANUFACTURER_YANG)
+        }
+        "\"local-networks\"" => {
+            Some(LOCAL_NETWORKS_DOCSTRING.to_string() + SEP + LOCAL_NETWORKS_YANG)
+        }
         _ => None,
     }
 }
@@ -235,5 +245,130 @@ const IETF_MUD_YANG: &str = r#"
         "MUD-related information, as specified
          by RFC 8520.";
       uses mud-grouping;
+    }
+"#;
+
+const MODEL_DOCSTRING: &str = r#"
+# 4.4.  model
+
+This string matches the entire MUD URL, thus covering the model that is unique within the context of the authority.
+It may contain not only model information, but versioning information as well, and any other information that the manufacturer wishes to add.
+The intended use is for devices of this precise class to match, to permit or deny communication between one another.
+"#;
+
+const LOCAL_NETWORKS_DOCSTRING: &str = r#"
+# 4.5.  local-networks
+
+This null-valued node expands to include local networks.
+Its default expansion is that packets must not traverse toward a default route that is received from the router.
+However, administrators may expand the expression as is appropriate in their deployments.
+"#;
+
+const CONTROLLER_DOCSTRING: &str = r#"
+# 4.6.  controller
+
+This URI specifies a value that a controller will register with the MUD manager.
+The node then is expanded to the set of hosts that are so registered.
+This node may also be a URN.
+In this case, the URN describes a well-known service, such as DNS or NTP, that has been standardized.
+Both of those URNs may be found in Section 17.7.
+
+When "my-controller" is used, it is possible that the administrator will be prompted to populate that class for each and every model.
+Use of "controller" with a named class allows the user to populate that class only once for many different models that a manufacturer may produce.
+
+Controller URIs MAY take the form of a URL (e.g., "http[s]://").
+However, MUD managers MUST NOT resolve and retrieve such files, and it is RECOMMENDED that there be no such file at this time, as their form and function may be defined at a point in the future.
+For now, URLs should serve simply as class names and may be populated by the local deployment administrator.
+
+Great care should be taken by MUD managers when invoking the controller class in the form of URLs.
+For one thing, it requires some understanding by the administrator as to when it is appropriate.
+
+Pre-registration in such classes by controllers with the MUD server is encouraged.
+The mechanism to do that is beyond the scope of this work.
+"#;
+
+const MY_CONTROLLER_DOCSTRING: &str = r#"
+# 4.7.  my-controller
+
+This null-valued node signals to the MUD manager to use whatever mapping it has for this MUD URL to a particular group of hosts.
+This may require prompting the administrator for class members.
+Future work should seek to automate membership management.
+"#;
+
+const MANUFACTURER_DOCSTRING: &str = r#"
+# 4.1.  manufacturer
+
+This node consists of a hostname that would be matched against the authority component of another Thing's MUD URL.
+In its simplest form, "manufacturer" and "same-manufacturer" may be implemented as access lists.
+In more complex forms, additional network capabilities may be used.
+For example, if one saw the line "manufacturer" : "flobbidy.example.com", then all Things that registered with a MUD URL that contained flobbity.example.com in its authority section would match.
+"#;
+
+const SAME_MANUFACTURER_DOCSTRING: &str = r#"
+# 4.2.  same-manufacturer
+
+This null-valued node is an equivalent for when the manufacturer element is used to indicate that the authority found in another Thing's MUD URL matches that of the authority found in this Thing's MUD URL.
+For example, if the Thing's MUD URL were "https://b1.example.com/ThingV1", then all devices that had a MUD URL with an authority section of b1.example.com would match.
+"#;
+
+const MANUFACTURER_YANG: &str = r#"
+    leaf manufacturer {
+      type inet:host;
+      description
+        "A domain that is intended to match the authority
+         section of the MUD URL.  This node is used to specify
+         one or more manufacturers a device should
+         be authorized to access.";
+    }
+"#;
+
+const SAME_MANUFACTURER_YANG: &str = r#"
+    leaf same-manufacturer {
+      type empty;
+      description
+        "This node matches the authority section of the MUD URL
+         of a Thing.  It is intended to grant access to all
+         devices with the same authority section.";
+    }
+"#;
+
+const MODEL_YANG: &str = r#"
+    leaf model {
+      type inet:uri;
+      description
+        "Devices of the specified model type will match if
+         they have an identical MUD URL.";
+    }
+"#;
+
+const LOCAL_NETWORKS_YANG: &str = r#"
+    leaf local-networks {
+      type empty;
+      description
+        "IP addresses will match this node if they are
+         considered local addresses.  A local address may be
+         a list of locally defined prefixes and masks
+         that indicate a particular administrative scope.";
+    }
+"#;
+
+const CONTROLLER_YANG: &str = r#"
+    leaf controller {
+      type inet:uri;
+      description
+        "This node names a class that has associated with it
+         zero or more IP addresses to match against.  These
+         may be scoped to a manufacturer or via a standard
+         URN.";
+    }
+"#;
+
+const MY_CONTROLLER_YANG: &str = r#"
+    leaf my-controller {
+      type empty;
+      description
+        "This node matches one or more network elements that
+         have been configured to be the controller for this
+         Thing, based on its MUD URL.";
     }
 "#;
