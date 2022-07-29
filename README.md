@@ -42,6 +42,9 @@ For example, to install the release version (likely to `$HOME/.cargo`; see
 
     $ cargo install --path .
 
+You will need a C compiler on your system for this to work because Cargo needs
+to compile the Tree-sitter-generated parser sources.
+
 To use it, of course you'll need to configure your (LSP-capable) text editor.
 While we can't go over complete configuration in this document, here's some
 snippets to hopefully get you most of the way.
