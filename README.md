@@ -34,6 +34,33 @@ Tree-sitter also allows querying tree via Scheme queries. This, e.g., allows
 easily finding syntax nodes of a certain type but much more complex queries are
 possible.
 
+## Try it!
+
+You can build (and install) this project with `cargo`.
+For example, to install the release version (likely to `$HOME/.cargo`; see
+`cargo help install`), run:
+
+    $ cargo install --path .
+
+You will need a C compiler on your system for this to work because Cargo needs
+to compile the Tree-sitter-generated parser sources.
+
+To use it, of course you'll need to configure your (LSP-capable) text editor.
+While we can't go over complete configuration in this document, here's some
+snippets to hopefully get you most of the way.
+
+#### Emacs
+
+`TODO`
+
+#### Neovim
+
+`TODO`
+
+#### VSCode
+
+`TODO`
+
 ## License
 
 Both the Tree-sitter grammar and the language server implementation are licensed
