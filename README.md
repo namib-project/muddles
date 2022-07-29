@@ -51,7 +51,28 @@ snippets to hopefully get you most of the way.
 
 #### Emacs
 
-`TODO`
+You can use muddles in Emacs with [lsp-mode], declaring a new major `mud-mode` derived from [json-mode].
+You can install both [lsp-mode] and [json-mode] from [MELPA] (`M-x package-install lsp-mode`, `M-x package-install json-mode`)
+
+Here is an example configuration:
+
+[lsp-mode]: <https://github.com/emacs-lsp/lsp-mode>
+[json-mode]: <https://github.com/joshwnj/json-mode>
+[MELPA]: <https://melpa.org/#/getting-started>
+
+```lisp
+(require 'lsp-mode)
+(require 'json-mode)
+(define-derived-mode mud-mode json-mode "MUD")
+(add-to-list 'lsp-language-id-configuration '(mud-mode . "mud"))
+(lsp-register-client
+  (make-lsp-client :new-connection (lsp-stdio-connection "/path/to/muddles")
+                   :major-modes '(mud-mode)
+                   :server-id 'muddles))
+(add-hook 'mud-mode-hook #'lsp)
+```
+
+For the best experience, I recommend installing [flycheck](https://github.com/flycheck/flycheck) (`M-x package-install flycheck`) for in-line linting and [lsp-ui](https://emacs-lsp.github.io/lsp-ui/) (`M-x package-install lsp-ui`) for documentation-on-hover. Both need no additional configuration.
 
 #### Neovim
 
