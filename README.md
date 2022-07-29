@@ -55,7 +55,30 @@ snippets to hopefully get you most of the way.
 
 #### Neovim
 
-`TODO`
+Assuming you are already using the [lspconfig] plugin, here's what the
+configuration contents could look like:
+
+[lspconfig]: <https://github.com/neovim/nvim-lspconfig>
+
+```lua
+local lspconfig = require'lspconfig'
+local configs = require'lspconfig.configs'
+
+-- ...
+
+if not configs.muddles then
+  configs.muddles = {
+    default_config = {
+      cmd = {'/path/to/my/binary/called/muddles'};
+      filetypes = {'mud'}; -- requires ':set ft=mud' in document
+      root_dir = function(fname)
+        return lspconfig.util.path.dirname(fname)
+      end;
+    };
+  }
+end
+lspconfig.muddles.setup{}
+```
 
 #### VSCode
 
