@@ -856,7 +856,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "ietf_acls",
@@ -867,7 +867,7 @@
           "named": true
         },
         {
-          "type": "json_object_fallback",
+          "type": "json_pair_fallback",
           "named": true
         }
       ]

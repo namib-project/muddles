@@ -2,41 +2,74 @@
   "name": "mud",
   "rules": {
     "source": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "CHOICE",
           "members": [
-            {
-              "type": "STRING",
-              "value": "{"
-            },
             {
               "type": "SEQ",
               "members": [
                 {
-                  "type": "SYMBOL",
-                  "name": "ietf_mud"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "ietf_mud"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "ietf_acls"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "json_pair_fallback"
+                    }
+                  ]
                 },
                 {
-                  "type": "STRING",
-                  "value": ","
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "ietf_acls"
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": ","
+                      },
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "SYMBOL",
+                            "name": "ietf_mud"
+                          },
+                          {
+                            "type": "SYMBOL",
+                            "name": "ietf_acls"
+                          },
+                          {
+                            "type": "SYMBOL",
+                            "name": "json_pair_fallback"
+                          }
+                        ]
+                      }
+                    ]
+                  }
                 }
               ]
             },
             {
-              "type": "STRING",
-              "value": "}"
+              "type": "BLANK"
             }
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "json_object_fallback"
+          "type": "STRING",
+          "value": "}"
         }
       ]
     },
