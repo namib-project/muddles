@@ -101,6 +101,17 @@ end
 lspconfig.muddles.setup{}
 ```
 
+#### Vim
+
+As Vim has no native LSP-support, you will need to select and configure the
+LSP-plugin of your choice, e.g. [CoC] or [vim-lsp].
+
+<!-- NOTE: if anybody feels like contributing more specific instructions here, please do :^) -->
+
+[CoC]: <https://github.com/neoclide/coc.nvim>
+
+[vim-lsp]: <https://github.com/prabirshrestha/vim-lsp>
+
 #### VSCode
 
 `TODO`
