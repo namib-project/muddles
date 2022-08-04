@@ -49,6 +49,9 @@ To use it, of course you'll need to configure your (LSP-capable) text editor.
 While we can't go over complete configuration in this document, here's some
 snippets to hopefully get you most of the way.
 
+Ultimately this boils down to telling the client to use the `muddles` binary as
+a server, communicating via stdin and stdout (as opposed to ports).
+
 #### Emacs
 
 You can use muddles in Emacs with [lsp-mode], declaring a new major `mud-mode` derived from [json-mode].
