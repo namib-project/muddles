@@ -34,6 +34,93 @@ Tree-sitter also allows querying tree via Scheme queries. This, e.g., allows
 easily finding syntax nodes of a certain type but much more complex queries are
 possible.
 
+## Try it!
+
+You can build (and install) this project with `cargo`.
+For example, to install the release version (likely to `$HOME/.cargo`; see
+`cargo help install`), run:
+
+    $ cargo install --path .
+
+You will need a C compiler on your system for this to work because Cargo needs
+to compile the Tree-sitter-generated parser sources.
+
+To use it, of course you'll need to configure your (LSP-capable) text editor.
+While we can't go over complete configuration in this document, here's some
+snippets to hopefully get you most of the way.
+
+Ultimately this boils down to telling the client to use the `muddles` binary as
+a server, communicating via stdin and stdout (as opposed to ports).
+
+#### Emacs
+
+You can use muddles in Emacs with [lsp-mode], declaring a new major `mud-mode` derived from [json-mode].
+You can install both [lsp-mode] and [json-mode] from [MELPA] (`M-x package-install lsp-mode`, `M-x package-install json-mode`)
+
+Here is an example configuration:
+
+[lsp-mode]: <https://github.com/emacs-lsp/lsp-mode>
+[json-mode]: <https://github.com/joshwnj/json-mode>
+[MELPA]: <https://melpa.org/#/getting-started>
+
+```lisp
+(require 'lsp-mode)
+(require 'json-mode)
+(define-derived-mode mud-mode json-mode "MUD")
+(add-to-list 'lsp-language-id-configuration '(mud-mode . "mud"))
+(lsp-register-client
+  (make-lsp-client :new-connection (lsp-stdio-connection "/path/to/muddles")
+                   :major-modes '(mud-mode)
+                   :server-id 'muddles))
+(add-hook 'mud-mode-hook #'lsp)
+```
+
+For the best experience, I recommend installing [flycheck](https://github.com/flycheck/flycheck) (`M-x package-install flycheck`) for in-line linting and [lsp-ui](https://emacs-lsp.github.io/lsp-ui/) (`M-x package-install lsp-ui`) for documentation-on-hover. Both need no additional configuration.
+
+#### Neovim
+
+Assuming you are already using the [lspconfig] plugin, here's what the
+configuration contents could look like:
+
+[lspconfig]: <https://github.com/neovim/nvim-lspconfig>
+
+```lua
+local lspconfig = require'lspconfig'
+local configs = require'lspconfig.configs'
+
+-- ...
+
+if not configs.muddles then
+  configs.muddles = {
+    default_config = {
+      cmd = {'/path/to/my/binary/called/muddles'};
+      filetypes = {'mud'}; -- requires ':set ft=mud' in document
+      root_dir = function(fname)
+        return lspconfig.util.path.dirname(fname)
+      end;
+    };
+  }
+end
+lspconfig.muddles.setup{}
+```
+
+#### Vim
+
+As Vim has no native LSP-support, you will need to select and configure the
+LSP-plugin of your choice, e.g. [CoC] or [vim-lsp].
+
+<!-- NOTE: if anybody feels like contributing more specific instructions here, please do :^) -->
+
+[CoC]: <https://github.com/neoclide/coc.nvim>
+
+[vim-lsp]: <https://github.com/prabirshrestha/vim-lsp>
+
+#### VSCode
+
+As far as I am aware we will need to create a simple Extension that hooks up
+the language server.
+We plan on doing that, but for now consider this marked `TODO`.
+
 ## License
 
 Both the Tree-sitter grammar and the language server implementation are licensed
