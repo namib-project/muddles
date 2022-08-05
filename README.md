@@ -117,7 +117,9 @@ LSP-plugin of your choice, e.g. [CoC] or [vim-lsp].
 
 #### VSCode
 
-`TODO`
+As far as I am aware we will need to create a simple Extension that hooks up
+the language server.
+We plan on doing that, but for now consider this marked `TODO`.
 
 ## License
 
