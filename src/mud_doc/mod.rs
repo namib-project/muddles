@@ -35,6 +35,8 @@ pub fn get_doc_for_mud_id(mud_id: &str) -> Option<String> {
         "\"local-networks\"" => {
             Some(LOCAL_NETWORKS_DOCSTRING.to_string() + SEP + LOCAL_NETWORKS_YANG)
         }
+        "\"aces\"" => Some(ACL_ACES_DOCSTRING.to_string() + SEP + ACL_ACES_YANG),
+        "\"type\"" => Some(ACL_TYPE_DESCRIPTION.to_string() + SEP + ACL_TYPE_YANG),
         _ => None,
     }
 }
@@ -370,5 +372,39 @@ const MY_CONTROLLER_YANG: &str = r#"
         "This node matches one or more network elements that
          have been configured to be the controller for this
          Thing, based on its MUD URL.";
+    }
+"#;
+
+const ACL_ACES_DOCSTRING: &str = r#"
+(per RFC8519):
+
+# 4.1.  IETF Access Control List Module
+
+[...]
+Each of the entries in the list ("aces"), indexed by the string "name", has containers defining "matches" and "actions".
+"#;
+
+const ACL_ACES_YANG: &str = r#"
+    container aces {
+      description
+        "The aces container contains one or more ACE nodes.";
+      list ace {
+          [...]
+      }
+    }
+"#;
+
+const ACL_TYPE_DESCRIPTION: &str = r#"
+Type of ACL.
+Indicates the primary intended type of match criteria (e.g., Ethernet, IPv4, IPv6, mixed, etc.) used in the list instance.
+"#;
+
+const ACL_TYPE_YANG: &str = r#"
+    leaf type {
+      type acl-type;
+      description
+        "Type of ACL.  Indicates the primary intended
+         type of match criteria (e.g., Ethernet, IPv4, IPv6, mixed,
+         etc.) used in the list instance.";
     }
 "#;
