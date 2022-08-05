@@ -29,9 +29,11 @@ module.exports = grammar({
     ietf_access_control_list_acls: $ => '"ietf-access-control-list:acls"',
 
     acl: $ => json_object(json_pair('"acl"', json_list($.acl_object))),
-    acl_object: $ => json_object(seq($.acl_name_def,','
-                                    ,json_pair('"type"', $.string),','
-                                    ,json_pair('"aces"', $.ace))),
+    acl_object: $ => json_object(comma_separated(choice($.acl_name_def
+                                                       ,json_pair(field('mud_id', $.type_id), $.string)
+                                                       ,json_pair(field('mud_id', $.aces_id), $.ace)))),
+    aces_id: $ => '"aces"',
+    type_id: $ => '"type"',
     ace: $ => json_object(json_pair('"ace"'
                          ,json_list($.ace_object))),
     ace_object: $ => json_object(seq(json_pair('"name"',    $.string) ,','

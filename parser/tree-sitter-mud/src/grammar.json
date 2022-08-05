@@ -383,53 +383,129 @@
           "value": "{"
         },
         {
-          "type": "SEQ",
+          "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "acl_name_def"
-            },
-            {
-              "type": "STRING",
-              "value": ","
-            },
-            {
               "type": "SEQ",
               "members": [
                 {
-                  "type": "STRING",
-                  "value": "\"type\""
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "acl_name_def"
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "FIELD",
+                          "name": "mud_id",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "type_id"
+                          }
+                        },
+                        {
+                          "type": "STRING",
+                          "value": ":"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "string"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "FIELD",
+                          "name": "mud_id",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "aces_id"
+                          }
+                        },
+                        {
+                          "type": "STRING",
+                          "value": ":"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "ace"
+                        }
+                      ]
+                    }
+                  ]
                 },
                 {
-                  "type": "STRING",
-                  "value": ":"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "string"
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": ","
+                      },
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "SYMBOL",
+                            "name": "acl_name_def"
+                          },
+                          {
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "FIELD",
+                                "name": "mud_id",
+                                "content": {
+                                  "type": "SYMBOL",
+                                  "name": "type_id"
+                                }
+                              },
+                              {
+                                "type": "STRING",
+                                "value": ":"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "string"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "FIELD",
+                                "name": "mud_id",
+                                "content": {
+                                  "type": "SYMBOL",
+                                  "name": "aces_id"
+                                }
+                              },
+                              {
+                                "type": "STRING",
+                                "value": ":"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "ace"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
                 }
               ]
             },
             {
-              "type": "STRING",
-              "value": ","
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "\"aces\""
-                },
-                {
-                  "type": "STRING",
-                  "value": ":"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "ace"
-                }
-              ]
+              "type": "BLANK"
             }
           ]
         },
@@ -438,6 +514,14 @@
           "value": "}"
         }
       ]
+    },
+    "aces_id": {
+      "type": "STRING",
+      "value": "\"aces\""
+    },
+    "type_id": {
+      "type": "STRING",
+      "value": "\"type\""
     },
     "ace": {
       "type": "SEQ",

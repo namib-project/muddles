@@ -86,10 +86,25 @@
   {
     "type": "acl_object",
     "named": true,
-    "fields": {},
+    "fields": {
+      "mud_id": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "aces_id",
+            "named": true
+          },
+          {
+            "type": "type_id",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "ace",
@@ -1363,6 +1378,11 @@
     }
   },
   {
+    "type": "type_id",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "udp_matches",
     "named": true,
     "fields": {},
@@ -1422,10 +1442,6 @@
   },
   {
     "type": "\"ace\"",
-    "named": false
-  },
-  {
-    "type": "\"aces\"",
     "named": false
   },
   {
@@ -1555,6 +1571,10 @@
   {
     "type": "]",
     "named": false
+  },
+  {
+    "type": "aces_id",
+    "named": true
   },
   {
     "type": "cache_validity_id",
